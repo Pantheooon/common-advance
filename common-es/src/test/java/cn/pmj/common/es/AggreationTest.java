@@ -1,6 +1,6 @@
 package cn.pmj.common.es;
 
-import lombok.extern.slf4j.Slf4j;
+import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
@@ -9,6 +9,7 @@ import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
+import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
 import org.elasticsearch.search.aggregations.metrics.avg.InternalAvg;
 import org.junit.Test;
 
@@ -179,6 +180,15 @@ public class AggreationTest extends EsBaseTest {
      */
     @Test
     public void test4() {
-
+        TermsAggregationBuilder termsAggregationBuilder = AggregationBuilders.terms("colors").field("color")
+                .subAggregation(AggregationBuilders.avg("avg_price").field("price"))
+                .subAggregation(AggregationBuilders.terms("makes").field("make")
+                        .subAggregation(AggregationBuilders.min("min_price").field("price"))
+                         .subAggregation(AggregationBuilders.max("max_price").field("price")));
+        SearchRequestBuilder searchRequestBuilder = client.prepareSearch("cars")
+                .setTypes("transactions")
+                .addAggregation(termsAggregationBuilder);
+        SearchResponse searchResponse = searchRequestBuilder.get();
+        Aggregation colors = searchResponse.getAggregations().get("colors");
     }
 }

@@ -18,6 +18,7 @@ import java.util.Map;
 /**
  * @author: Pantheon
  * @date: 2019/4/3 14:45
+ * https://blog.csdn.net/ydwyyy/article/details/79487995
  */
 public class AggreationTest extends EsBaseTest {
 
@@ -145,39 +146,39 @@ public class AggreationTest extends EsBaseTest {
 
     /**
      * {
-     *    "size" : 0,
-     *    "aggs": {
-     *       "colors": {
-     *          "terms": {
-     *             "field": "color"
-     *          },
-     *          "aggs": {
-     *             "avg_price": { "avg": { "field": "price" }
-     *             },
-     *             "make" : {
-     *                 "terms" : {
-     *                     "field" : "make"
-     *                 },
-     *                 "aggs" : {
-     *                     "min_price" : { //自定义变量名字
-     *                         "min": { //参数-最小值
-     *                             "field": "price"
-     *                             }
-     *                         },
-     *                     "max_price" : {
-     *                          "max": { //参数-最大值
-     *                                  "field": "price"
-     *                                  }
-     *                          }
-     *                 }
-     *             }
-     *          }
-     *       }
-     *    }
+     * "size" : 0,
+     * "aggs": {
+     * "colors": {
+     * "terms": {
+     * "field": "color"
+     * },
+     * "aggs": {
+     * "avg_price": { "avg": { "field": "price" }
+     * },
+     * "make" : {
+     * "terms" : {
+     * "field" : "make"
+     * },
+     * "aggs" : {
+     * "min_price" : { //自定义变量名字
+     * "min": { //参数-最小值
+     * "field": "price"
+     * }
+     * },
+     * "max_price" : {
+     * "max": { //参数-最大值
+     * "field": "price"
+     * }
+     * }
+     * }
+     * }
+     * }
+     * }
+     * }
      * }
      */
     @Test
-    public void test4(){
+    public void test4() {
 
     }
 }

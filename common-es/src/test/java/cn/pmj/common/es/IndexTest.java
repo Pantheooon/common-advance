@@ -1,44 +1,25 @@
 package cn.pmj.common.es;
 
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequestBuilder;
-import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequestBuilder;
 import org.elasticsearch.action.get.GetRequestBuilder;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexRequestBuilder;
 import org.elasticsearch.action.index.IndexResponse;
-import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.Strings;
 import org.elasticsearch.common.document.DocumentField;
-import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.common.transport.TransportAddress;
 import org.elasticsearch.common.xcontent.XContentBuilder;
-import org.elasticsearch.common.xcontent.XContentFactory;
-import org.elasticsearch.transport.client.PreBuiltTransportClient;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.io.OutputStream;
-import java.net.InetSocketAddress;
 import java.util.Date;
 import java.util.Map;
 
 import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
 
-public class IndexTest {
+public class IndexTest extends EsBaseTest {
 
 
-    private TransportClient client;
-
-
-    @Before
-    public void before() {
-        Settings settings = Settings.builder().put("cluster.name", "elasticsearch").build();
-        client = new PreBuiltTransportClient(settings);
-        InetSocketAddress address = new InetSocketAddress("localhost", 9300);
-        client.addTransportAddress(new TransportAddress(address));
-    }
 
     @org.junit.Test
     public void createIndex() throws IOException {

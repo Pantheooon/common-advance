@@ -1,0 +1,155 @@
+POST http://localhost:9200/books/_search
+Content-Type: application/json
+
+{
+  "size": 0,
+  "aggs": {
+    "per_count": {
+      "terms": {
+        "field": "language"
+      },
+      "aggs": {
+        "avg_price": {
+          "avg": {
+            "field": "price"
+          }
+        }
+      }
+    }
+  }
+}
+
+###filter
+POST http://localhost:9200/books/_search
+Content-Type: application/json
+
+{
+  "size": 0,
+  "aggs": {
+    "java_avg_price": {
+      "filter": {
+        "term": {
+          "title": "java"
+        }
+      },
+      "aggs": {
+        "avg_price": {
+          "avg": {
+            "field": "price"
+          }
+        }
+      }
+    }
+  }
+}
+
+### filters
+POST http://localhost:9200/books/_search
+Content-Type: application/json
+
+{
+  "size": 0,
+  "aggs": {
+    "per_avg_price": {
+      "filters": {
+        "filters": [
+          {
+            "match": {
+              "title": "java"
+            }
+          },
+          {
+            "match": {
+              "title": "python"
+            }
+          }
+        ]
+      },
+      "aggs": {
+        "avg_price": {
+          "avg": {
+            "field": "price"
+          }
+        }
+      }
+    }
+  }
+}
+
+### range
+POST http://localhost:9200/books/_search
+Content-Type: application/json
+
+{
+  "aggs": {
+    "price_ranges": {
+      "range": {
+        "field": "price",
+        "ranges": [
+          {
+            "to": 50
+          },
+          {
+            "from": 50,
+            "to": 80
+          },
+          {
+            "from": 80
+          }
+        ]
+      }
+    }
+  }
+}
+
+###
+POST http://localhost:9200/books/_search
+Content-Type: application/json
+
+{
+  "aggs": {
+    "range": {
+      "date_range": {
+        "field": "publish_time",
+        "format": "yyyy-MM-dd",
+        "ranges": [
+          {
+            "to": "2013-09-01"
+          },
+          {
+            "from": "2013-09-01",
+            "to": "2014-09-01"
+          },
+          {
+            "from": "2014-09-01"
+          }
+        ]
+      }
+    }
+  }
+}
+
+### date range
+POST http://localhost:9200/books/_search
+Content-Type: application/json
+
+{
+  "aggs": {
+    "range": {
+      "date_range": {
+        "field": "publish_time",
+        "format": "yyyy-MM-dd",
+        "ranges": [
+          {
+            "to": "now-24M/M"
+          },
+          {
+            "from": "now-24M/M"
+          }
+        ]
+      }
+    }
+  }
+}
+
+###

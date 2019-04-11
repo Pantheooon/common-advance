@@ -59,4 +59,49 @@ Content-Type: application/json
   }
 }
 
+### cardinality
+GET http://localhost:9200/books/_search
+Content-Type: application/json
+
+{
+  "size": 0,
+  "aggs": {
+    "all_len": {
+      "cardinality": {
+        "field": "language"
+      }
+    }
+  }
+}
+
+### stats
+GET http://localhost:9200/books/_search
+Content-Type: application/json
+
+{
+  "size": 0,
+  "aggs": {
+    "grades_stats": {
+      "stats": {
+        "field": "price"
+      }
+    }
+  }
+}
+
+### value count
+POST http://localhost:9200/books/_search
+Content-Type: application/json
+
+{
+  "size": 0,
+  "aggs": {
+    "doc_count": {
+      "value_count": {
+        "field": "author"
+      }
+    }
+  }
+}
+
 ###

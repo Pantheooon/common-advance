@@ -1,6 +1,5 @@
-package cn.pmj.common.hadoop;
+package cn.pmj.common.hadoop.wc;
 
-import com.amazonaws.services.dynamodbv2.xspec.S;
 
 import java.util.HashMap;
 import java.util.Map;

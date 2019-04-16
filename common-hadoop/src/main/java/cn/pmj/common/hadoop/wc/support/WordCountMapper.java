@@ -1,7 +1,7 @@
-package cn.pmj.common.hadoop.support;
+package cn.pmj.common.hadoop.wc.support;
 
-import cn.pmj.common.hadoop.HDFSContext;
-import cn.pmj.common.hadoop.HDFSMapper;
+import cn.pmj.common.hadoop.wc.HDFSContext;
+import cn.pmj.common.hadoop.wc.HDFSMapper;
 
 public class WordCountMapper implements HDFSMapper {
     @Override

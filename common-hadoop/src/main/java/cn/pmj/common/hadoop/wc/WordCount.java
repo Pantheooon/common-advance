@@ -1,6 +1,6 @@
-package cn.pmj.common.hadoop;
+package cn.pmj.common.hadoop.wc;
 
-import cn.pmj.common.hadoop.support.WordCountMapper;
+import cn.pmj.common.hadoop.wc.support.WordCountMapper;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.*;
 
@@ -8,7 +8,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URI;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 

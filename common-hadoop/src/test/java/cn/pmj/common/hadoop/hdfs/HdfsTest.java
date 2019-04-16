@@ -54,7 +54,7 @@ public class HdfsTest {
     @Test
     public void create()throws Exception {
 //        FSDataOutputStream out = fileSystem.create(new Path("/hdfsapi/test/a.txt"));
-        FSDataOutputStream out = fileSystem.create(new Path("/hdfsapi/test/b.txt"));
+        FSDataOutputStream out = fileSystem.create(new Path("/hdfsapi/test/c.txt"));
         out.writeUTF("hello pk: replication 1");
         out.flush();
         out.close();

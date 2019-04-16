@@ -1,4 +1,4 @@
-package cn.pmj.common.hadoop;
+package cn.pmj.common.hadoop.wc;
 
 public interface HDFSMapper {
 

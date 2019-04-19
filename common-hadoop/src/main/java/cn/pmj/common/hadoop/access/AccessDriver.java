@@ -30,8 +30,8 @@ public class AccessDriver {
         job.setOutputKeyClass(NullWritable.class);
         job.setOutputValueClass(Access.class);
 
-//        job.setPartitionerClass(MyPartitioner.class);
-//        job.setNumReduceTasks(3);
+        job.setPartitionerClass(MyPartitioner.class);
+        job.setNumReduceTasks(0);
         Path in = new Path("/access/access.log");
 
         Path out = new Path("/access/access_result");

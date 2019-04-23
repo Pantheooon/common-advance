@@ -34,7 +34,7 @@
 ##### hdfs是hadoop文件系统的一个实现,也存在其他的文件系统,客户端中FileSystem存在几个具体实现如下:
 
 文件系统 | uri |  实现|描述  
--|-|-
+-|-|-|
 local | file | LocalFileSystem |使用客户端校验和的本地磁盘文件系统
 hdfs | hdfs | DistributedFileSystem |hadoop的分布式文件系统
 webhdfs | Webhdfs | WebHdfsFileSystem |基于http的文件系统,提供对hdfs的认证读/写访问

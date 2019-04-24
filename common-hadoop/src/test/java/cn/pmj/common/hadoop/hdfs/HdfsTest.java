@@ -90,16 +90,16 @@ public class HdfsTest {
     @Test
     public void copyFromLocalBigFile() throws Exception {
 
-        InputStream in = new BufferedInputStream(new FileInputStream(new File("d://test.mp4")));
+        InputStream in = new BufferedInputStream(new FileInputStream(new File("d://CentOS-7-x86_64-Minimal-1810.iso")));
 
-        FSDataOutputStream out = fileSystem.create(new Path("/video.mp4"),
+        FSDataOutputStream out = fileSystem.create(new Path("/CentOS-7-x86_64-Minimal-1810.iso"),
                 new Progressable() {
                     public void progress() {
                         System.out.print(".");
                     }
                 });
 
-        IOUtils.copyBytes(in, out ,4096);
+        IOUtils.copyBytes(in, out ,4096,true);
 
     }
 

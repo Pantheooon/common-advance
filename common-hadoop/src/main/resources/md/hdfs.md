@@ -44,6 +44,36 @@
                   
 
 
+#### 8.java接口
+```
+urlTest方法
+InputStream in =new URL("hdfs://host:port/path").openStream();
+通过这种形式hdfs协议去获取流文件处理的关键点在于URL.setURLStreamHandlerFactory这个方法.这个方法里可以
+设置具体协议解析的情况,而hdfs的factory为FsUrlStreamHandlerFactory,由其创建FsUrlStreamHandler,拿到FsUrlConnection
+但是这个url类中的factory为静态属性,所以整个应用只能设置一次,hadoop提供了第二种方法来获取流文件.
+```
+
+```
+通过FileSystem的api,FileSystem的get方法提供了几个重载,获取分布式hdfs系统的文件,如果获取本地,可以通过
+FileSystem.getLocal方法.FileSystem.get方法其实返回的对象实例就是FileSystem,根据不协议信息返回不同的FileSystem
+如果传入的是hdfs的,那返回的即DistruibutedFileSyetem.如果本地则LocalFileSystem,FileSyetm的open方法为钩子方法,留给各个子类
+去实现相应获取流的细节.
+
+FileSystem.open方法返回的为FSDataInputStream,它支持送任意位置访问数据,也就是实现的Seekable接口下的方法
+```
+
+#### 9.读取文件的流程(hdfs为例)
+##### 1.客户端调用open方法拿到DistributedFileSystem,由DistributedFileSystem访问namenode,namenode告知DistributedFileSystem
+##### 数据的最佳dataNode地址
+##### 2.客户端和datanode交互,获取数据文件,如果客户端本身是一个datanode,则客户端将会从保存有相应数据块副本的本地datanode读取数据
+##### 3.如果在和datanode读取数据过程中,datanode故障,则客户端会尝试从最邻近的datanode读取数据,并会记录故障datanode位置,不会读取该节点后续的数据
+##### 如果发现有顺坏的块,会从相近的datanode重新读取,并将此信息告知namenode
+
+##### 在此过程中,对于距离客户端的最佳datanode地址,主要考虑带宽因素,同一机器上的数据读取肯定是要快于跨机房的,hadoop设置的等级如下
+###### 1.同一节点上的进程
+###### 2.同一机架上的不同节点
+###### 3.同一数据中心中不同机架上的节点
+###### 4.不同数据中心中的节点
 
 
 

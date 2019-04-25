@@ -62,7 +62,7 @@ FileSystem.getLocal方法.FileSystem.get方法其实返回的对象实例就是F
 FileSystem.open方法返回的为FSDataInputStream,它支持送任意位置访问数据,也就是实现的Seekable接口下的方法
 ```
 
-#### 9.读取文件的流程(hdfs为例)
+#### 9.读取文件的流程 P68
 ##### 1.客户端调用open方法拿到DistributedFileSystem,由DistributedFileSystem访问namenode,namenode告知DistributedFileSystem
 ##### 数据的最佳dataNode地址
 ##### 2.客户端和datanode交互,获取数据文件,如果客户端本身是一个datanode,则客户端将会从保存有相应数据块副本的本地datanode读取数据
@@ -76,7 +76,19 @@ FileSystem.open方法返回的为FSDataInputStream,它支持送任意位置访�
 ###### 4.不同数据中心中的节点
 
 
+#### 10.文件的写入 P72
+##### 1.客户端调用create方法,DistributedFileSystem对namenode创建一个rpc调用,在文件系统的命名空间中创建一个新文件,
+##### 此时文件中未有相应的数据,namenode执行相应的检查,权限等等,如果检查通过,则创建新文件记录一条记录,否则抛出异常
+##### 2.接着DistributedFileSystem向客户端返回一个FsDataOutputStream对象,客户端开始写入数据,FsDataOutputStream对象封装一个
+##### DFSoutPutStream对象,该对象负责处理datanode和namenode之间的通信
+##### 3.客户端写入数据时,DFSoutPutStream将它分成一个个数据包,并写入内部队列,称之为数据队列,DataStreamer处理数据队列,它的工作是挑选出合适存储数据副本的一组
+##### datanode,并据此要求namenode分配新的数据块
 
+#### 11.一致模型
+##### 1.新建文件后,它能在命名空间中立即可见
+##### 2.写入内容并不保证立即可见,即使数据流已经刷新并存储
+##### 3.写入的数据超过一个块后,第一个数据块对新的readder可见,当前正在写入的块对reader不可见.
+##### 4.强行将缓存刷新到datanode手段,即FSDataOutPutStream调用hflush()方法,返回成功后,对新的reader而言,hdfs能保证文件中到目前为止写入的数据均到达所有datanode的写入管道并对新的reader可见
 
 
 

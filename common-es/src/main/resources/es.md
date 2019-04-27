@@ -95,3 +95,18 @@ GET /index/type/_search
     }}}
 }
 ```
+
+
+
+聚合
+
+```json
+{
+ "aggs": {
+   "counts": {
+       "terms": {"filed": "xxx"}
+         }
+    }
+}
+
+```

@@ -1,5 +1,6 @@
 package cn.pmj.common.hadoop.hdfs;
 
+import cn.pmj.common.hadoop.access.Access;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.*;
@@ -11,6 +12,7 @@ import org.junit.Test;
 
 import java.io.*;
 import java.net.URI;
+import java.net.URL;
 
 public class HdfsTest {
 
@@ -193,5 +195,18 @@ public class HdfsTest {
     @Test
     public void testReplication() {
         System.out.println(configuration.get("dfs.replication"));
+    }
+
+
+
+    @Test
+    public void testConfiguration() throws IOException {
+        Configuration configuration = new Configuration();
+        configuration.addResource("hadoop-local.xml");
+        fileSystem = FileSystem.get(configuration);
+        FileStatus[] fileStatuses = fileSystem.listStatus(new Path("/anaconda-ks.cfg"));
+        for (FileStatus fileStatus : fileStatuses) {
+            System.out.println(fileStatus.getPath().toString());
+        }
     }
 }

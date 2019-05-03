@@ -1,5 +1,6 @@
 package cn.pmj.common.es;
 
+import lombok.Data;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.search.SearchHit;
@@ -191,4 +192,5 @@ public class AggreationTest extends EsBaseTest {
         SearchResponse searchResponse = searchRequestBuilder.get();
         Aggregation colors = searchResponse.getAggregations().get("colors");
     }
+
 }

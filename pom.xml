@@ -12,6 +12,7 @@
         <module>common-zk</module>
         <module>common-es</module>
         <module>common-hadoop</module>
+        <module>common-lucene</module>
     </modules>
     <dependencies>
         <dependency>

@@ -63,9 +63,6 @@
         </encoder>
     </appender>
 
-    <logger name="com.zhangmen" level="info" additivity="true">
-        <appender-ref ref="fileInfoLog"/>
-    </logger>
 
 
     <root level="info">

@@ -1,10 +1,17 @@
 package api;
 
+import org.apache.zookeeper.CreateMode;
+import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.ZooKeeper;
+import org.apache.zookeeper.data.Stat;
+import org.junit.After;
 import org.junit.Before;
 
 import java.io.IOException;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
+
+import static org.apache.zookeeper.ZooDefs.Ids.OPEN_ACL_UNSAFE;
 
 /**
  * @author: Pantheon
@@ -13,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 public class Test {
 
 
-    private ZooKeeper zooKeeper;
+    public ZooKeeper zooKeeper;
 
     private String address = "127.0.0.1:2181";
     //等待客户端最长的时间
@@ -33,4 +40,58 @@ public class Test {
     }
 
 
+    @After
+    public void setDown() throws InterruptedException {
+        zooKeeper.close();
+    }
+
+
+    String serviceId = Long.toString(new Random().nextLong());
+    boolean isLeader = false;
+
+    @org.junit.Test
+    public void runForMaster()  {
+        while (true){
+            try {
+                zooKeeper.create("/master", "1520".getBytes(), OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL);
+                isLeader = true;
+            } catch (KeeperException e) {
+                isLeader = false;
+                break;
+            } catch (InterruptedException e) {
+                isLeader = false;
+                break;
+            }
+
+            if (checkeMaster()){
+                break;
+            }
+        }
+
+
+    }
+
+
+    private boolean checkeMaster() {
+        while (true) {
+            try {
+                Stat stat = new Stat();
+                byte[] data = zooKeeper.getData("/master", false, stat);
+                isLeader = new String(data).equals(serviceId);
+                return true;
+            } catch (KeeperException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
+
+    @org.junit.Test
+    public void getData() throws KeeperException, InterruptedException {
+
+        assert serviceId.equals("1520");
+    }
 }

@@ -46,6 +46,8 @@ public class IndexingTest extends TestCase {
     directory = new RAMDirectory();
 
     IndexWriter writer = getWriter();           //2
+    //开启调试
+    writer.setInfoStream(System.out);
 
     for (int i = 0; i < ids.length; i++) {      //3
       Document doc = new Document();
@@ -192,7 +194,7 @@ public class IndexingTest extends TestCase {
 
   public void testMaxFieldLength() throws IOException {
 
-    assertEquals(1, getHitCount("contents", "bridges"));  //1
+    assertEquals(0, getHitCount("contents", "bridges"));  //1
 
     IndexWriter writer = new IndexWriter(directory, new WhitespaceAnalyzer(), //2
                                          new IndexWriter.MaxFieldLength(1)); //2

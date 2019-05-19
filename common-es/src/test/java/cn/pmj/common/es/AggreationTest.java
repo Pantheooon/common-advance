@@ -38,13 +38,14 @@ public class AggreationTest extends EsBaseTest {
      */
     @Test
     public void test1() {
-        SearchResponse response = client.prepareSearch("cars").
+        SearchRequestBuilder searchRequestBuilder = client.prepareSearch("cars").
                 setTypes("transactions").
                 addAggregation(AggregationBuilders
                         .terms("popular_colors")
-                        .field("color"))
+                        .field("color"));
+        SearchResponse response = searchRequestBuilder.get();
 //                .setSize(5)
-                .get();
+
         SearchHits hits = response.getHits();
         SearchHit[] searchHits = hits.getHits();
         //获取命中的文档

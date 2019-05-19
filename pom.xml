@@ -13,6 +13,7 @@
         <module>common-es</module>
         <module>common-hadoop</module>
         <module>common-lucene</module>
+        <module>common-flink</module>
     </modules>
     <dependencies>
         <dependency>

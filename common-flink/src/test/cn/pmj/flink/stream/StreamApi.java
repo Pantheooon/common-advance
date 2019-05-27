@@ -1,5 +1,6 @@
 package cn.pmj.flink.stream;
 
+import org.apache.flink.api.common.ExecutionConfig;
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.common.functions.ReduceFunction;
@@ -17,13 +18,12 @@ public class StreamApi {
 
     static StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
     static {
-        env.setParallelism(1);
+        env.setParallelism(5);
     }
 
     @Test
     public void testDemo() throws Exception {
-
-
+        ExecutionConfig config = env.getConfig();
         DataStreamSource<String> stream = env.readTextFile("D:\\pantheon\\code\\common-advance\\common-flink\\src\\main\\resources\\test");
         SingleOutputStreamOperator<Tuple2<String,Integer>> sum = stream.flatMap(new Tokenizer()).keyBy(0).sum(1);
         sum.print();

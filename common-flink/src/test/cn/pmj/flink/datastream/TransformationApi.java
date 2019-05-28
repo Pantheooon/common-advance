@@ -1,11 +1,9 @@
 package cn.pmj.flink.datastream;
 
-import cn.pmj.flink.stream.StreamApi;
 import org.apache.flink.api.common.functions.FilterFunction;
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.common.functions.ReduceFunction;
-import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
@@ -75,6 +73,15 @@ public class TransformationApi {
         env.execute();
     }
 
+    /**
+     * 聚合操作,min  minBy  max  maxBy sum
+     * @throws Exception
+     */
+    @Test
+    public void testMin() throws Exception {
+        streamSource.keyBy(0).min(1).print();
+        env.execute();
+    }
 
     class MyFlatMapFunction implements FlatMapFunction<Tuple2<Integer,Integer>,Integer>{
 

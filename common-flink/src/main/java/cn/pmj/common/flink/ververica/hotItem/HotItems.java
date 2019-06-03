@@ -1,5 +1,6 @@
 package cn.pmj.common.flink.ververica.hotItem;
 
+import lombok.Data;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.flink.api.common.functions.AggregateFunction;
 import org.apache.flink.api.common.functions.FilterFunction;
@@ -194,6 +195,7 @@ public class HotItems {
         }
     }
 
+    @Data
     public static class UserBehavior {
         public long userId;
         public long itemId;
@@ -201,50 +203,6 @@ public class HotItems {
         public String behavior;
         public long timestamp;
 
-        public long getUserId() {
-            return userId;
-        }
-
-        public UserBehavior setUserId(long userId) {
-            this.userId = userId;
-            return this;
-        }
-
-        public long getItemId() {
-            return itemId;
-        }
-
-        public UserBehavior setItemId(long itemId) {
-            this.itemId = itemId;
-            return this;
-        }
-
-        public int getCategoryId() {
-            return categoryId;
-        }
-
-        public UserBehavior setCategoryId(int categoryId) {
-            this.categoryId = categoryId;
-            return this;
-        }
-
-        public String getBehavior() {
-            return behavior;
-        }
-
-        public UserBehavior setBehavior(String behavior) {
-            this.behavior = behavior;
-            return this;
-        }
-
-        public long getTimestamp() {
-            return timestamp;
-        }
-
-        public UserBehavior setTimestamp(long timestamp) {
-            this.timestamp = timestamp;
-            return this;
-        }
     }
 
 }

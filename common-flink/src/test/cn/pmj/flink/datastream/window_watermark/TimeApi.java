@@ -39,12 +39,12 @@ public class TimeApi {
     @Test
     public void testTimeStampsAndWaterMark(){
         //在sourceFunction中指定
-        FlinkKafkaConsumer08<Map<String,Long>> sourceFunction = new FlinkKafkaConsumer08<>(null, null, null, null);
-        //AssignerWithPeriodicWatermarks
-        sourceFunction.assignTimestampsAndWatermarks(new MyAscendingTimestampExtractor());
-        //代表允許延迟10s
-        sourceFunction.assignTimestampsAndWatermarks(new MyBoundedOutOfOrdernessTimestampExtractor(Time.seconds(10)));
-        env.addSource(sourceFunction);
+//        FlinkKafkaConsumer08<Map<String,Long>> sourceFunction = new FlinkKafkaConsumer08<>(null, null, null, null);
+//        //AssignerWithPeriodicWatermarks
+//        sourceFunction.assignTimestampsAndWatermarks(new MyAscendingTimestampExtractor());
+//        //代表允許延迟10s
+//        sourceFunction.assignTimestampsAndWatermarks(new MyBoundedOutOfOrdernessTimestampExtractor(Time.seconds(10)));
+//        env.addSource(sourceFunction);
     }
 
 

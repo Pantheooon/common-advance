@@ -1,6 +1,7 @@
 package cn.pmj.common.flink.helloword.chapter12;
 
 import org.apache.flink.api.common.functions.AggregateFunction;
+import org.apache.flink.api.common.state.KeyedStateStore;
 import org.apache.flink.api.java.tuple.Tuple;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.api.java.tuple.Tuple3;
@@ -21,7 +22,13 @@ import java.util.List;
  */
 public class AggFunctionOnWindow {
 
-
+    /**
+     * windowFunction分为四种,ReduceFunction  AggreateFunction  FoldFunction   ProcessWindowFunction
+     *
+     * 分为两大类:1.增量聚合:ReduceFunction  AggreateFunction  FoldFunction
+     *          2.全量聚合:ProcessWindowFunction
+     *
+     */
     private static List<Tuple3<String, String, Long>> generateSource() {
         List<Tuple3<String, String, Long>> list = new ArrayList<>();
         list.add(Tuple3.of("class1", "张三", 100L));
@@ -42,9 +49,11 @@ public class AggFunctionOnWindow {
 
         //process
 //        SingleOutputStreamOperator<Double> aggregate =
-//                env.fromCollection(generateSource()).keyBy(0).countWindow(3).process(new MyProcessWindowFunction());
+                env.fromCollection(generateSource()).keyBy(0).countWindow(3).reduce(new MyReduceFunction(),new MyProcessWindowFunction());
         //reduce
        SingleOutputStreamOperator<Tuple3<String, String, Long>> aggregate = env.fromCollection(generateSource()).keyBy(0).countWindow(2).reduce(new MyReduceFunction());
+
+       // Increamental 和processWindowsFunction的整合
 
         aggregate.print();
         env.execute();

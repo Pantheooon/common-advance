@@ -1,7 +1,6 @@
-package cn.pmj.common.flink.helloword.chapter12;
+package cn.pmj.common.flink.helloword.windowfunction;
 
 import org.apache.flink.api.common.functions.AggregateFunction;
-import org.apache.flink.api.common.state.KeyedStateStore;
 import org.apache.flink.api.java.tuple.Tuple;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.api.java.tuple.Tuple3;

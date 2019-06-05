@@ -1,4 +1,4 @@
-package cn.pmj.common.flink.helloword.chapter12;
+package cn.pmj.common.flink.helloword.windowfunction;
 
 import lombok.Data;
 import lombok.ToString;
@@ -9,13 +9,18 @@ import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.streaming.api.TimeCharacteristic;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
+import org.apache.flink.streaming.api.datastream.WindowedStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.functions.ProcessFunction;
 import org.apache.flink.streaming.api.functions.source.SourceFunction;
 import org.apache.flink.streaming.api.functions.timestamps.AscendingTimestampExtractor;
+import org.apache.flink.streaming.api.functions.windowing.ProcessWindowFunction;
+import org.apache.flink.streaming.api.windowing.time.Time;
+import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
 import org.apache.flink.util.Collector;
 
-import java.util.concurrent.TimeUnit;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * @author: Pantheon
@@ -25,6 +30,9 @@ import java.util.concurrent.TimeUnit;
 public class ProcessFunctionTest {
 
     public static void main(String[] args) throws Exception {
+        long s = 1559751247007L;
+        Date date = new Date(s);
+        System.out.println(date);
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         //设置时间为eventTime
         env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
@@ -34,14 +42,21 @@ public class ProcessFunctionTest {
                 return element.getOpTs();
             }
         });
-        stream.print();
-        SingleOutputStreamOperator<Tuple2<String, Long>> result = stream.keyBy(new KeySelector<OptLog, String>() {
+        WindowedStream<OptLog, String, TimeWindow> window = stream.keyBy(new KeySelector<OptLog, String>() {
 
             @Override
             public String getKey(OptLog value) throws Exception {
                 return value.getUserName();
             }
-        }).process(new CountWithTimeOutFunction());
+        }).timeWindow(Time.seconds(20));
+        SingleOutputStreamOperator result = window.process(new ProcessWindowFunction<OptLog,OptLog,String, TimeWindow>() {
+            @Override
+            public void process(String s, Context context, Iterable<OptLog> elements, Collector<OptLog> out) throws Exception {
+                for (OptLog element : elements) {
+                    out.collect(element);
+                }
+            }
+        });
         result.print();
         env.execute();
     }
@@ -66,10 +81,14 @@ public class ProcessFunctionTest {
          */
         private long opTs;
 
+        private String time;
         public OptLog(String userName, int opType, long opTs) {
             this.userName = userName;
             this.opType = opType;
             this.opTs = opTs;
+            Date date = new Date(opTs);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+            time = sdf.format(date);
         }
 
         public static OptLog of(String userName, int opType, long opTs) {
@@ -98,7 +117,7 @@ public class ProcessFunctionTest {
                 int randomNum = (int) (1 + Math.random() * (5 - 1 + 1));
                 sourceContext.collect(OptLog.of(nameArray[randomNum - 1], randomNum, System.currentTimeMillis()));
                 num++;
-                Thread.sleep(10000);
+                Thread.sleep(5000);
             }
         }
 

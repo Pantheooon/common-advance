@@ -9,7 +9,8 @@ import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.core.fs.Path;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer08;
+import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer010;
+import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer010;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -61,7 +62,7 @@ public class DataSourceApi {
         properties.setProperty("bootstrap.servers","localhost:9092");
         //....
         SimpleStringSchema simpleStringSchema = new SimpleStringSchema();
-        FlinkKafkaConsumer08<String> topic = new FlinkKafkaConsumer08("topic", simpleStringSchema, properties);
+        FlinkKafkaConsumer010<String> topic = new FlinkKafkaConsumer010<>("topic", simpleStringSchema, properties);
         env.addSource(topic);
     }
 }

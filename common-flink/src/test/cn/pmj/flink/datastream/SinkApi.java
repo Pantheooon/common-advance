@@ -5,7 +5,7 @@ import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.core.fs.FileSystem;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.flink.streaming.connectors.kafka.FlinkKafkaProducer08;
+import org.apache.flink.streaming.connectors.kafka.FlinkKafkaProducer010;
 import org.junit.Test;
 
 public class SinkApi {
@@ -27,7 +27,7 @@ public class SinkApi {
     @Test
     public void thirdPartyTest(){
         DataStreamSource<Tuple2<String, Integer>> dataStreamSource = env.fromElements(new Tuple2<>("Alex", 18), new Tuple2<>("Peter", 43));
-        FlinkKafkaProducer08<Tuple2<String,Integer>> producer = new FlinkKafkaProducer08("localhost:9092", "topic", new SimpleStringSchema());
+        FlinkKafkaProducer010<Tuple2<String,Integer>> producer = new FlinkKafkaProducer010("localhost:9092", "topic", new SimpleStringSchema());
         dataStreamSource.addSink(producer);
     }
 }

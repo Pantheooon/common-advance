@@ -35,6 +35,7 @@ under the License.
 		<scala.binary.version>2.11</scala.binary.version>
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
+		<hadoop.version>2.6.0</hadoop.version>
 	</properties>
 
 	<repositories>
@@ -70,6 +71,23 @@ under the License.
 			<groupId>com.cloudwise.toushibao</groupId>
 			<artifactId>simulatedata-generator</artifactId>
 			<version>0.0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.flink</groupId>
+			<artifactId>flink-hadoop-fs</artifactId>
+			<version>${flink.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.hadoop</groupId>
+			<artifactId>hadoop-common</artifactId>
+			<version>${hadoop.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.hadoop</groupId>
+			<artifactId>hadoop-hdfs</artifactId>
+			<version>${hadoop.version}</version>
 		</dependency>
 		<!-- Add connector dependencies here. They must be in the default scope (compile). -->
 
@@ -129,7 +147,12 @@ under the License.
             <artifactId>lombok</artifactId>
             <version>1.18.6</version>
         </dependency>
-    </dependencies>
+		<dependency>
+		<groupId>org.apache.flink</groupId>
+		<artifactId>flink-jdbc</artifactId>
+		<version>${flink.version}</version>
+		</dependency>
+	</dependencies>
 
 	<build>
 		<plugins>

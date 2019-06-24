@@ -1,7 +1,11 @@
 package cn.pmj.flink.table;
 
+import org.apache.flink.api.common.typeinfo.Types;
+import org.apache.flink.api.java.DataSet;
 import org.apache.flink.api.java.ExecutionEnvironment;
 import org.apache.flink.api.java.operators.DataSource;
+import org.apache.flink.api.java.tuple.Tuple2;
+import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.api.Table;
@@ -9,20 +13,24 @@ import org.apache.flink.table.api.TableEnvironment;
 import org.apache.flink.table.api.java.BatchTableEnvironment;
 import org.apache.flink.table.api.java.StreamTableEnvironment;
 import org.apache.flink.table.catalog.InMemoryExternalCatalog;
+import org.apache.flink.table.descriptors.Csv;
+import org.apache.flink.table.descriptors.FileSystem;
+import org.apache.flink.table.descriptors.Schema;
 import org.apache.flink.table.sinks.CsvTableSink;
 import org.apache.flink.table.sources.CsvTableSource;
 import org.apache.flink.table.sources.TableSource;
+import org.apache.flink.types.Row;
 import org.junit.Test;
 
 public class TableTest {
 
     StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();
     StreamTableEnvironment tableEnv = TableEnvironment.getTableEnvironment(streamEnv);
-
+    //注册内部table
+    Table table = tableEnv.scan("table").select("id,name,userId");
     @Test
     public void intenalCatalog(){
-        //注册内部table
-        Table table = tableEnv.scan("table").select("id,name,userId");
+
         tableEnv.registerTable("projectTable",table);
         //tableSource
         TableSource source = new CsvTableSource("path",new String[]{},null);
@@ -56,5 +64,43 @@ public class TableTest {
         DataSource<Long> dataSource = env.generateSequence(1, 100);
         batchEnv.registerDataSet("datasource",dataSource);
         Table table = batchEnv.fromDataSet(dataSource);
+    }
+
+    @Test
+    public void tableToDataStream(){
+        //只将insert添加到流中
+        DataStream<Row> dataStream = tableEnv.toAppendStream(table, Row.class);
+        //boolean标志是更新还是retract操作
+        DataStream<Tuple2<Boolean, Row>> tuple2DataStream = tableEnv.toRetractStream(table, Row.class);
+    }
+
+    @Test
+    public void tableToDataSet(){
+        ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
+        BatchTableEnvironment tableEnvi = BatchTableEnvironment.getTableEnvironment(env);
+        Table table = tableEnvi.fromDataSet(env.generateSequence(0, 100));
+        DataSet<Long> objectDataSet = tableEnvi.toDataSet(table,Long.class);
+    }
+
+    @Test
+    public void testSchema(){
+        //字段位置映射
+        DataStreamSource<Long> source = streamEnv.generateSequence(1, 100);
+        Table table = tableEnv.fromDataStream(source,"id,name,age...");
+        //字段名称映射
+        //名称映射
+    }
+
+    //外部连接器
+    @Test
+    public void testTableConnector(){
+        Schema schema = new Schema();
+        schema.field("field1",Types.SQL_TIMESTAMP);
+        tableEnv.connect(new FileSystem().path("xxx"))
+                .withFormat(new Csv().field("filed1", Types.STRING)
+                        .fieldDelimiter(",").lineDelimiter("\n")
+                        .ignoreParseErrors()
+                )
+                .withSchema(schema).inAppendMode().registerTableSource("MyTable");
     }
 }

@@ -1,5 +1,6 @@
 package cn.pmj.flink.table;
 
+import com.sun.org.apache.regexp.internal.RE;
 import org.apache.flink.api.common.typeinfo.Types;
 import org.apache.flink.api.java.DataSet;
 import org.apache.flink.api.java.ExecutionEnvironment;
@@ -8,14 +9,13 @@ import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.table.api.OverWindow;
 import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.TableEnvironment;
 import org.apache.flink.table.api.java.BatchTableEnvironment;
 import org.apache.flink.table.api.java.StreamTableEnvironment;
 import org.apache.flink.table.catalog.InMemoryExternalCatalog;
-import org.apache.flink.table.descriptors.Csv;
-import org.apache.flink.table.descriptors.FileSystem;
-import org.apache.flink.table.descriptors.Schema;
+import org.apache.flink.table.descriptors.*;
 import org.apache.flink.table.sinks.CsvTableSink;
 import org.apache.flink.table.sources.CsvTableSource;
 import org.apache.flink.table.sources.TableSource;
@@ -102,5 +102,33 @@ public class TableTest {
                         .ignoreParseErrors()
                 )
                 .withSchema(schema).inAppendMode().registerTableSource("MyTable");
+    }
+
+
+
+    public void testTotal(){
+        StreamTableEnvironment tableEnv = TableEnvironment.getTableEnvironment(streamEnv);
+        tableEnv.connect(getKafkaConnection())
+                .withFormat(getFomrat())
+                .withSchema(new Schema().field("id",Types.INT)
+                .field("name",Types.STRING).field("rowtime",Types.SQL_TIMESTAMP)
+                        //定义为eventTime
+                        .rowtime(new Rowtime().timestampsFromField("timestamp").watermarksPeriodicBounded(60000))
+                ).inAppendMode().registerTableSource("KafkaTable");
+        Table kafkaTable = tableEnv.scan("KafkaTable");
+    }
+
+    private FormatDescriptor getFomrat() {
+        return null;
+    }
+
+    private Kafka getKafkaConnection(){
+        Kafka kafka = new Kafka();
+        kafka.version("0.10")
+                .topic("ccc")
+                .startFromLatest()
+                .property("zookeerper.connect","xxx")
+                .property("bootstrap.servers","xxx");
+        return kafka;
     }
 }

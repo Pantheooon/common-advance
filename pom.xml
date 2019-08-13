@@ -16,6 +16,7 @@
         <module>common-flink</module>
         <module>algorithm</module>
         <module>common-tdd</module>
+        <module>common-base</module>
     </modules>
     <dependencies>
         <dependency>

@@ -11,8 +11,14 @@ import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.java.functions.KeySelector;
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.streaming.api.TimeCharacteristic;
+import org.apache.flink.streaming.api.datastream.DataStreamSink;
+import org.apache.flink.streaming.api.datastream.DataStreamSource;
+import org.apache.flink.streaming.api.datastream.KeyedStream;
+import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.functions.KeyedProcessFunction;
+import org.apache.flink.streaming.api.functions.sink.SinkFunction;
+import org.apache.flink.streaming.api.functions.source.ParallelSourceFunction;
 import org.apache.flink.streaming.api.functions.source.RichSourceFunction;
 import org.apache.flink.util.Collector;
 import org.junit.Test;
@@ -31,39 +37,44 @@ public class Total {
     @Test
     public void test() throws Exception {
         env.setStreamTimeCharacteristic(TimeCharacteristic.ProcessingTime);
-        env.addSource(new MySource()).flatMap(new FlatMapFunction<Student, Student>() {
+        DataStreamSource<Student> source = env.addSource(new MySource()).setParallelism(2);
+        SingleOutputStreamOperator<Student> flatMap = source.flatMap(new FlatMapFunction<Student, Student>() {
             @Override
             public void flatMap(Student value, Collector<Student> out) throws Exception {
                 out.collect(value);
             }
-        }).setParallelism(1).map(new MapFunction<Student, Student>() {
+        });
+        SingleOutputStreamOperator<Student> parallelism = flatMap.setParallelism(1);
+        SingleOutputStreamOperator<Student> map = parallelism.map(new MapFunction<Student, Student>() {
             @Override
             public Student map(Student value) throws Exception {
                 return value;
             }
-        }).keyBy(new KeySelector<Student, String>() {
+        });
+        KeyedStream<Student, String> keyedStream = map.keyBy(new KeySelector<Student, String>() {
             @Override
             public String getKey(Student value) throws Exception {
                 return value.getName();
             }
-        }).process(new KeyedProcessFunction<String, Student, Student>() {
+        });
+        SingleOutputStreamOperator<Student> valueState = keyedStream.process(new KeyedProcessFunction<String, Student, Student>() {
 
-           private MapState<String, Integer> mapState;
+            private MapState<String, Integer> mapState;
 
             @Override
             public void open(Configuration parameters) throws Exception {
-                MapStateDescriptor<String,Integer> descriptor = new MapStateDescriptor("valueState", TypeInformation.of(String.class),TypeInformation.of(Integer.class));
+                MapStateDescriptor<String, Integer> descriptor = new MapStateDescriptor("valueState", TypeInformation.of(String.class), TypeInformation.of(Integer.class));
                 this.mapState = getRuntimeContext().getMapState(descriptor);
             }
 
             @Override
             public void processElement(Student value, Context ctx, Collector<Student> out) throws Exception {
                 Integer count = mapState.get(ctx.getCurrentKey());
-                count =  count == null?1:++count;
-                mapState.put(ctx.getCurrentKey(),count);
+                count = count == null ? 1 : ++count;
+                mapState.put(ctx.getCurrentKey(), count);
                 out.collect(value);
 
-                ctx.timerService().registerProcessingTimeTimer(System.currentTimeMillis()+100);
+                ctx.timerService().registerProcessingTimeTimer(System.currentTimeMillis() + 100);
             }
 
             @Override
@@ -71,14 +82,21 @@ public class Total {
                 String format = "学员:%s,访问次数:%d";
                 String currentKey = ctx.getCurrentKey();
                 Integer count = mapState.get(currentKey);
-                System.err.println(String.format(format,currentKey,count));
+                System.err.println(String.format(format, currentKey, count));
+            }
+        });
+
+        DataStreamSink<Student> studentDataStreamSink = valueState.addSink(new SinkFunction<Student>() {
+            @Override
+            public void invoke(Student value, Context context) throws Exception {
+                System.out.println(value);
             }
         });
         env.execute();
     }
 
 
-   static class MySource extends RichSourceFunction<Student> {
+   static class MySource extends RichSourceFunction<Student> implements ParallelSourceFunction<Student> {
 
 
         private List<String> names = Arrays.asList("张三","李四","王五","赵六");

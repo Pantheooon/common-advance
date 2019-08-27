@@ -13,12 +13,18 @@ public class Position implements CommandInvoker {
 
     private Direction direcrion;
 
-
     private Mars mars;
 
     private int x;
 
     private int y;
+
+    public Position(Direction direcrion, Mars mars, int x, int y) {
+        this.direcrion = direcrion;
+        this.mars = mars;
+        this.x = x;
+        this.y = y;
+    }
 
     @Override
     public void execute(List<Command> commands) {
@@ -27,18 +33,18 @@ public class Position implements CommandInvoker {
             switch (command) {
                 case r:
                     invoker = new RPositionInvoker(direcrion);
-                    continue;
+                    break;
                 case l:
                     invoker = new LPositionInvoker(direcrion);
-                    continue;
+                    break;
                 case f:
                     invoker = new FPositionInvoker(direcrion);
-                    continue;
+                    break;
                 case b:
                     invoker = new BPositionInvoker(direcrion);
-                    continue;
+                    break;
             }
-            invoker.invoke(command, this);
+            invoker.invoke(this);
         }
     }
 
@@ -48,7 +54,15 @@ public class Position implements CommandInvoker {
     }
 
     public boolean outOfBoundry() {
-        return false;
+        if (x < 0 || y < 0) {
+            return true;
+        }
+
+        if (x <= mars.getX() && y <= mars.getY()) {
+            return false;
+        }
+
+        return true;
     }
 
 

@@ -11,22 +11,22 @@ public class RPositionInvoker extends AbstractPositionInvoker {
     }
 
     @Override
-    protected void whenE(Command command, Position position) {
+    protected void whenE( Position position) {
 
     }
 
     @Override
-    protected void whenN(Command command, Position position) {
+    protected void whenN( Position position) {
 
     }
 
     @Override
-    protected void whenS(Command command, Position position) {
+    protected void whenS( Position position) {
 
     }
 
     @Override
-    protected void whenW(Command command, Position position) {
+    protected void whenW( Position position) {
 
     }
 }

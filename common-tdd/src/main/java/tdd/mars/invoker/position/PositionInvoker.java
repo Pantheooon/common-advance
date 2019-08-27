@@ -5,6 +5,6 @@ import tdd.mars.command.Command;
 
 public interface PositionInvoker {
 
-    void invoke(Command command, Position position);
+    void invoke(Position position);
 
 }

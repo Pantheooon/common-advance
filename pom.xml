@@ -14,7 +14,7 @@
         <module>common-hadoop</module>
         <module>common-lucene</module>
         <module>common-flink</module>
-        <module>algorithm</module>
+        <module>common-algorithm</module>
         <module>common-tdd</module>
         <module>common-base</module>
     </modules>

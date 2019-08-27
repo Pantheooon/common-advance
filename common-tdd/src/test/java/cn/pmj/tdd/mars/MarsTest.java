@@ -18,8 +18,8 @@ public class MarsTest {
                 .addCommand(Command.f)
                 .addCommand(Command.b).end();
 
-        Position position = new Position();
-        Mars mars = new Mars();
+        Position position =null;
+        Mars mars = new Mars(0,0);
         MarsRover rover = new MarsRover();
         rover.execute(command);
         Position position1 = rover.get();

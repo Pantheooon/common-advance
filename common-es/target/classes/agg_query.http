@@ -1,0 +1,107 @@
+GET http://localhost:9200/books/_search
+Content-Type: application/json
+
+{
+  "size": 0,
+  "aggs": {
+    "max_price": {
+      "max": {
+        "field": "price"
+      }
+    }
+  }
+}
+
+###
+GET http://localhost:9200/books/_search
+Content-Type: application/json
+
+{
+  "size": 0,
+  "aggs": {
+    "min_price": {
+      "min": {
+        "field": "publish_time",
+        "format": "yyyy-MM-dd"
+      }
+    }
+  }
+}
+
+###
+GET http://localhost:9200/books/_search
+Content-Type: application/json
+
+{
+  "size": 0,
+  "aggs": {
+    "avg_price": {
+      "avg": {
+        "field": "price"
+      }
+    }
+  }
+}
+
+###
+
+GET http://localhost:9200/books/_search
+Content-Type: application/json
+
+{
+  "size": 0,
+  "aggs": {
+    "sum_price": {
+      "sum": {
+        "field": "price"
+      }
+    }
+  }
+}
+
+### cardinality
+GET http://localhost:9200/books/_search
+Content-Type: application/json
+
+{
+  "size": 0,
+  "aggs": {
+    "all_len": {
+      "cardinality": {
+        "field": "language"
+      }
+    }
+  }
+}
+
+### stats
+GET http://localhost:9200/books/_search
+Content-Type: application/json
+
+{
+  "size": 0,
+  "aggs": {
+    "grades_stats": {
+      "stats": {
+        "field": "price"
+      }
+    }
+  }
+}
+
+### value count
+POST http://localhost:9200/books/_search
+Content-Type: application/json
+
+{
+  "size": 0,
+  "aggs": {
+    "doc_count": {
+      "value_count": {
+        "field": "author"
+      }
+    }
+  }
+}
+
+###

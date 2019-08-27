@@ -14,28 +14,28 @@ public abstract class AbstractPositionInvoker implements PositionInvoker {
     }
 
     @Override
-    public void invoke(Command command, Position position) {
+    public void invoke(Position position) {
         switch (direction) {
             case E:
-                whenE(command, position);
+                whenE(position);
                 break;
             case N:
-                whenN(command, position);
+                whenN(position);
                 break;
             case S:
-                whenS(command, position);
+                whenS(position);
                 break;
             case W:
-                whenW(command, position);
+                whenW(position);
                 break;
         }
     }
 
-    protected abstract void whenE(Command command, Position position);
+    protected abstract void whenE(Position position);
 
-    protected abstract void whenN(Command command, Position position);
+    protected abstract void whenN(Position position);
 
-    protected abstract void whenS(Command command, Position position);
+    protected abstract void whenS(Position position);
 
-    protected abstract void whenW(Command command, Position position);
+    protected abstract void whenW(Position position);
 }

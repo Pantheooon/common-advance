@@ -10,8 +10,6 @@ public interface CommandInvoker {
 
      void execute(List<Command> commands);
 
-
-
      Position get();
 
 }

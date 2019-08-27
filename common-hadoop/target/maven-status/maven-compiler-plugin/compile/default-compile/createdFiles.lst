@@ -1,0 +1,12 @@
+cn\pmj\common\hadoop\wc\HDFSContext.class
+cn\pmj\common\hadoop\wc\WordCount.class
+cn\pmj\common\hadoop\mr\WordCountApp.class
+cn\pmj\common\hadoop\wc\support\WordCountMapper.class
+cn\pmj\common\hadoop\access\AccessDriver.class
+cn\pmj\common\hadoop\mr\WordCountReducer.class
+cn\pmj\common\hadoop\access\Access.class
+cn\pmj\common\hadoop\wc\HDFSMapper.class
+cn\pmj\common\hadoop\mr\WordCountMapper.class
+cn\pmj\common\hadoop\access\AccessReducer.class
+cn\pmj\common\hadoop\access\MyPartitioner.class
+cn\pmj\common\hadoop\access\AccessMapper.class

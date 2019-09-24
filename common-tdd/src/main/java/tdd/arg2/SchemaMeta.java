@@ -14,7 +14,6 @@ public class SchemaMeta<T> {
     private Object nullValue;
 
 
-
     public Object getValue(String value) {
         switch (name) {
             case "bool":

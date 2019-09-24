@@ -22,12 +22,15 @@ public class DataSetTest {
     ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
 
     DataSource<Long> dataSource = env.generateSequence(0, 100);
+
     @Test
-    public void testBroadcast(){
+    public void testBroadcast() {
         //注册缓存
-        env.registerCachedFile("file://d:/123","123");
+        env.registerCachedFile("file://d:/123", "123");
         DataSource<Long> dataSource = env.generateSequence(0, 100);
-        dataSource.map((t)->{return t;}).withBroadcastSet(dataSource,"dasss").flatMap(new RichFlatMapFunction<Long, Object>() {
+        dataSource.map((t) -> {
+            return t;
+        }).withBroadcastSet(dataSource, "dasss").flatMap(new RichFlatMapFunction<Long, Object>() {
             @Override
             public void open(Configuration parameters) throws Exception {
                 List<Object> dasss = getRuntimeContext().getBroadcastVariable("dasss");
@@ -44,10 +47,12 @@ public class DataSetTest {
     }
 
     @Test
-    public void testCache(){
+    public void testCache() {
 
 
-        dataSource.map((t)->{return t;}).withBroadcastSet(dataSource,"dasss").flatMap(new RichFlatMapFunction<Long, Object>() {
+        dataSource.map((t) -> {
+            return t;
+        }).withBroadcastSet(dataSource, "dasss").flatMap(new RichFlatMapFunction<Long, Object>() {
             @Override
             public void flatMap(Long value, Collector<Object> out) throws Exception {
                 DistributedCache distributedCache = getRuntimeContext().getDistributedCache();
@@ -57,14 +62,13 @@ public class DataSetTest {
     }
 
 
-
 //    语义注解
 
     /**
      * ForwardedFileds代表数据进入后,对指定指定不进行修改,不参与函数的逻辑计算
      */
     @Test
-    public void testForwardedFileds(){
+    public void testForwardedFileds() {
         MapOperator<Long, Object> operator = dataSource.map(null).withForwardedFields("f0->f0");
         //多输入,join,cogroup等操作
         operator.withForwardedFields();
@@ -74,19 +78,20 @@ public class DataSetTest {
     /**
      * 指定不转发字段,需要参与到函数计算当中
      */
-    public void testNonForwardedFileds(){}
+    public void testNonForwardedFileds() {
+    }
 
 
     /**
      *
      */
-    public void testReadFields(){}
-
+    public void testReadFields() {
+    }
 
 
     //注解方式
     @FunctionAnnotation.ForwardedFields("f0->f0;f1->f2")
-    class MyMapFunction implements MapFunction<Tuple3, Tuple2>{
+    class MyMapFunction implements MapFunction<Tuple3, Tuple2> {
         @Override
         public Tuple2 map(Tuple3 value) throws Exception {
             return null;

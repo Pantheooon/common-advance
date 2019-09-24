@@ -12,7 +12,8 @@ import java.io.IOException;
 public class ConfigDeserializationSchema implements KeyedDeserializationSchema<Config> {
     @Override
     public Config deserialize(byte[] messageKey, byte[] message, String topic, int partition, long offset) throws IOException {
-        return JSON.parseObject(new String(message), new TypeReference<Config>() {});
+        return JSON.parseObject(new String(message), new TypeReference<Config>() {
+        });
     }
 
     @Override
@@ -22,6 +23,7 @@ public class ConfigDeserializationSchema implements KeyedDeserializationSchema<C
 
     @Override
     public TypeInformation<Config> getProducedType() {
-        return TypeInformation.of(new TypeHint<Config>() {});
+        return TypeInformation.of(new TypeHint<Config>() {
+        });
     }
 }

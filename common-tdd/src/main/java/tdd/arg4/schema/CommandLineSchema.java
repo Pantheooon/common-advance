@@ -26,8 +26,8 @@ public class CommandLineSchema {
 
     public SchemaSpc of(String flag) {
         SchemaSpc schemaSpc = spcMap.get(flag);
-        if (schemaSpc == null){
-            throw new NoSuchElementException(flag+" do not found");
+        if (schemaSpc == null) {
+            throw new NoSuchElementException(flag + " do not found");
         }
         return schemaSpc;
     }

@@ -20,12 +20,13 @@ import java.io.IOException;
 public class IOTest {
 
 
-
-    public void setUp(){}
+    public void setUp() {
+    }
 
 
     /**
      * 测试压缩 支持deflate,gzip,bzip2,lzo,lz4,snappy几种压缩算法
+     *
      * @throws IOException
      */
     @Test
@@ -38,7 +39,7 @@ public class IOTest {
         FSDataInputStream open = fileSystem.open(new Path("D:\\apps\\logs\\AppDebug.gz"));
         CompressionInputStream inputStream = codec.createInputStream(open);
         FSDataOutputStream fsDataOutputStream = fileSystem.create(new Path(outPut));
-        IOUtils.copyBytes(inputStream,fsDataOutputStream,configuration);
+        IOUtils.copyBytes(inputStream, fsDataOutputStream, configuration);
 
     }
 

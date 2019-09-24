@@ -20,7 +20,7 @@ public class PageStatApp {
 
     public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException {
         Configuration configuration = new Configuration();
-        configuration.set("mapreduce.jobtracker.staging.root.dir","d://tmp");
+        configuration.set("mapreduce.jobtracker.staging.root.dir", "d://tmp");
 
         Job job = Job.getInstance(configuration);
         job.setJarByClass(PageStatApp.class);
@@ -54,7 +54,7 @@ public class PageStatApp {
             Map<String, String> parse = logParser.parse(value.toString());
             String url = parse.get("url");
             String pageId = GetPageId.getPageId(url);
-            if (pageId == null || pageId.length()==0) {
+            if (pageId == null || pageId.length() == 0) {
                 context.write(defaultText, ONE);
             } else {
                 context.write(new Text(pageId), ONE);

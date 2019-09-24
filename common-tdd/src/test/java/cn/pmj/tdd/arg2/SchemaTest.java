@@ -14,44 +14,41 @@ public class SchemaTest {
 
     @Test
     public void test_schema() {
-        check("l:bool","bool","false",Boolean.FALSE,"l");
-        check("p:int","int","0",0,"p");
-        check("s:str","str","","","s");
-        check(schema,"bool","false",Boolean.FALSE,"l");
-        check(schema,"int","0",0,"p");
-        check(schema,"str","","","s");
+        check("l:bool", "bool", "false", Boolean.FALSE, "l");
+        check("p:int", "int", "0", 0, "p");
+        check("s:str", "str", "", "", "s");
+        check(schema, "bool", "false", Boolean.FALSE, "l");
+        check(schema, "int", "0", 0, "p");
+        check(schema, "str", "", "", "s");
     }
 
 
-
-
     @Test
-    public void test_schemaMap(){
+    public void test_schemaMap() {
         SchemaMetaMap schemaMap = new SchemaMetaMap();
         SchemaMeta boolMeta = schemaMap.get("bool");
-        assertEquals(boolMeta,new SchemaMeta("bool",false,"false"));
+        assertEquals(boolMeta, new SchemaMeta("bool", false, "false"));
         SchemaMeta intMeta = schemaMap.get("int");
-        assertEquals(intMeta,new SchemaMeta("int",0,"0"));
+        assertEquals(intMeta, new SchemaMeta("int", 0, "0"));
         SchemaMeta strMeta = schemaMap.get("str");
-        assertEquals(strMeta,new SchemaMeta("str","",""));
+        assertEquals(strMeta, new SchemaMeta("str", "", ""));
     }
 
 
     @Test
-    public void test_default_value(){
+    public void test_default_value() {
         SchemaParser parser = new SchemaParser(schema);
-        assertEquals(parser.getDefaultValue("s"),"");
-        assertEquals(parser.getDefaultValue("l"),false);
-        assertEquals(parser.getDefaultValue("p"),0);
+        assertEquals(parser.getDefaultValue("s"), "");
+        assertEquals(parser.getDefaultValue("l"), false);
+        assertEquals(parser.getDefaultValue("p"), 0);
     }
 
 
-
-    public void check(String schemaStr,String type,Object nullValue,Object defaultObject,String flag ){
+    public void check(String schemaStr, String type, Object nullValue, Object defaultObject, String flag) {
         SchemaParser schema = new SchemaParser(schemaStr);
         SchemaMeta schemaMeta = schema.getSchemaMeta(flag);
-        SchemaMeta schemaMeta1 = new SchemaMeta(type,defaultObject,nullValue);
-        assertEquals(schemaMeta1,schemaMeta);
+        SchemaMeta schemaMeta1 = new SchemaMeta(type, defaultObject, nullValue);
+        assertEquals(schemaMeta1, schemaMeta);
     }
 
 }

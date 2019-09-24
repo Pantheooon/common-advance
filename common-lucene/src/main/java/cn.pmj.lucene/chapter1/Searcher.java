@@ -2,18 +2,18 @@ package cn.pmj.lucene.chapter1;
 
 /**
  * Copyright Manning Publications Co.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific lan      
-*/
+ * See the License for the specific lan
+ */
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
@@ -38,42 +38,42 @@ import java.io.IOException;
  */
 public class Searcher {
 
-  public static void main(String[] args) throws IllegalArgumentException,
-        IOException, ParseException {
+    public static void main(String[] args) throws IllegalArgumentException,
+            IOException, ParseException {
 
-    String indexDir = "D:\\pantheon\\code\\common-advance\\common-lucene\\src\\main\\resources\\index";               //1
-    String q = "patent";                      //2
+        String indexDir = "D:\\pantheon\\code\\common-advance\\common-lucene\\src\\main\\resources\\index";               //1
+        String q = "patent";                      //2
 
-    search(indexDir, q);
-  }
-
-  public static void search(String indexDir, String q)
-    throws IOException, ParseException {
-
-    Directory dir = FSDirectory.open(new File(indexDir)); //3
-    IndexSearcher is = new IndexSearcher(dir);   //3
-
-    QueryParser parser = new QueryParser(Version.LUCENE_30, // 4
-                                         "contents",  //4
-                     new StandardAnalyzer(          //4
-                       Version.LUCENE_30));  //4
-    Query query = parser.parse(q);              //4
-    long start = System.currentTimeMillis();
-    TopDocs hits = is.search(query, 10); //5
-    long end = System.currentTimeMillis();
-
-    System.err.println("Found " + hits.totalHits +   //6  
-      " document(s) (in " + (end - start) +        // 6
-      " milliseconds) that matched query '" +     // 6
-      q + "':");                                   // 6
-
-    for(ScoreDoc scoreDoc : hits.scoreDocs) {
-      Document doc = is.doc(scoreDoc.doc);               //7
-      System.out.println(doc.get("fullpath"));  //8
+        search(indexDir, q);
     }
 
-    is.close();                                //9
-  }
+    public static void search(String indexDir, String q)
+            throws IOException, ParseException {
+
+        Directory dir = FSDirectory.open(new File(indexDir)); //3
+        IndexSearcher is = new IndexSearcher(dir);   //3
+
+        QueryParser parser = new QueryParser(Version.LUCENE_30, // 4
+                "contents",  //4
+                new StandardAnalyzer(          //4
+                        Version.LUCENE_30));  //4
+        Query query = parser.parse(q);              //4
+        long start = System.currentTimeMillis();
+        TopDocs hits = is.search(query, 10); //5
+        long end = System.currentTimeMillis();
+
+        System.err.println("Found " + hits.totalHits +   //6
+                " document(s) (in " + (end - start) +        // 6
+                " milliseconds) that matched query '" +     // 6
+                q + "':");                                   // 6
+
+        for (ScoreDoc scoreDoc : hits.scoreDocs) {
+            Document doc = is.doc(scoreDoc.doc);               //7
+            System.out.println(doc.get("fullpath"));  //8
+        }
+
+        is.close();                                //9
+    }
 }
 
 /*

@@ -28,46 +28,47 @@ public class TableTest {
     StreamTableEnvironment tableEnv = TableEnvironment.getTableEnvironment(streamEnv);
     //注册内部table
     Table table = tableEnv.scan("table").select("id,name,userId");
-    @Test
-    public void intenalCatalog(){
 
-        tableEnv.registerTable("projectTable",table);
+    @Test
+    public void intenalCatalog() {
+
+        tableEnv.registerTable("projectTable", table);
         //tableSource
-        TableSource source = new CsvTableSource("path",new String[]{},null);
-        tableEnv.registerTableSource("csv",source);
+        TableSource source = new CsvTableSource("path", new String[]{}, null);
+        tableEnv.registerTableSource("csv", source);
         //tableSink
-        CsvTableSink tableSink = new CsvTableSink("path","field");
-        tableEnv.registerTableSink("sink",tableSink);
+        CsvTableSink tableSink = new CsvTableSink("path", "field");
+        tableEnv.registerTableSink("sink", tableSink);
     }
 
     @Test
-    public void externalCatalog(){
+    public void externalCatalog() {
         InMemoryExternalCatalog catalog = new InMemoryExternalCatalog("external");
-        tableEnv.registerExternalCatalog("externalCatalog",catalog);
+        tableEnv.registerExternalCatalog("externalCatalog", catalog);
 
     }
 
     //datastream,dataset==>table
     @Test
-    public void dataStreamToTable(){
+    public void dataStreamToTable() {
         DataStreamSource<Long> dataStream = streamEnv.generateSequence(1, 100);
         //注册到table上
-        tableEnv.registerDataStream("dataStream",dataStream);
+        tableEnv.registerDataStream("dataStream", dataStream);
         //转换
         Table table = tableEnv.fromDataStream(dataStream);
     }
 
     @Test
-    public void dataSetToTable(){
+    public void dataSetToTable() {
         ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
         BatchTableEnvironment batchEnv = TableEnvironment.getTableEnvironment(env);
         DataSource<Long> dataSource = env.generateSequence(1, 100);
-        batchEnv.registerDataSet("datasource",dataSource);
+        batchEnv.registerDataSet("datasource", dataSource);
         Table table = batchEnv.fromDataSet(dataSource);
     }
 
     @Test
-    public void tableToDataStream(){
+    public void tableToDataStream() {
         //只将insert添加到流中
         DataStream<Row> dataStream = tableEnv.toAppendStream(table, Row.class);
         //boolean标志是更新还是retract操作
@@ -75,27 +76,27 @@ public class TableTest {
     }
 
     @Test
-    public void tableToDataSet(){
+    public void tableToDataSet() {
         ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
         BatchTableEnvironment tableEnvi = BatchTableEnvironment.getTableEnvironment(env);
         Table table = tableEnvi.fromDataSet(env.generateSequence(0, 100));
-        DataSet<Long> objectDataSet = tableEnvi.toDataSet(table,Long.class);
+        DataSet<Long> objectDataSet = tableEnvi.toDataSet(table, Long.class);
     }
 
     @Test
-    public void testSchema(){
+    public void testSchema() {
         //字段位置映射
         DataStreamSource<Long> source = streamEnv.generateSequence(1, 100);
-        Table table = tableEnv.fromDataStream(source,"id,name,age...");
+        Table table = tableEnv.fromDataStream(source, "id,name,age...");
         //字段名称映射
         //名称映射
     }
 
     //外部连接器
     @Test
-    public void testTableConnector(){
+    public void testTableConnector() {
         Schema schema = new Schema();
-        schema.field("field1",Types.SQL_TIMESTAMP);
+        schema.field("field1", Types.SQL_TIMESTAMP);
         tableEnv.connect(new FileSystem().path("xxx"))
                 .withFormat(new Csv().field("filed1", Types.STRING)
                         .fieldDelimiter(",").lineDelimiter("\n")
@@ -105,13 +106,12 @@ public class TableTest {
     }
 
 
-
-    public void testTotal(){
+    public void testTotal() {
         StreamTableEnvironment tableEnv = TableEnvironment.getTableEnvironment(streamEnv);
         tableEnv.connect(getKafkaConnection())
                 .withFormat(getFomrat())
-                .withSchema(new Schema().field("id",Types.INT)
-                .field("name",Types.STRING).field("rowtime",Types.SQL_TIMESTAMP)
+                .withSchema(new Schema().field("id", Types.INT)
+                        .field("name", Types.STRING).field("rowtime", Types.SQL_TIMESTAMP)
                         //定义为eventTime
                         .rowtime(new Rowtime().timestampsFromField("timestamp").watermarksPeriodicBounded(60000))
                 ).inAppendMode().registerTableSource("KafkaTable");
@@ -122,13 +122,13 @@ public class TableTest {
         return null;
     }
 
-    private Kafka getKafkaConnection(){
+    private Kafka getKafkaConnection() {
         Kafka kafka = new Kafka();
         kafka.version("0.10")
                 .topic("ccc")
                 .startFromLatest()
-                .property("zookeerper.connect","xxx")
-                .property("bootstrap.servers","xxx");
+                .property("zookeerper.connect", "xxx")
+                .property("bootstrap.servers", "xxx");
         return kafka;
     }
 }

@@ -49,7 +49,7 @@ public class ProcessFunctionTest {
                 return value.getUserName();
             }
         }).timeWindow(Time.seconds(20));
-        SingleOutputStreamOperator result = window.process(new ProcessWindowFunction<OptLog,OptLog,String, TimeWindow>() {
+        SingleOutputStreamOperator result = window.process(new ProcessWindowFunction<OptLog, OptLog, String, TimeWindow>() {
             @Override
             public void process(String s, Context context, Iterable<OptLog> elements, Collector<OptLog> out) throws Exception {
                 for (OptLog element : elements) {
@@ -82,6 +82,7 @@ public class ProcessFunctionTest {
         private long opTs;
 
         private String time;
+
         public OptLog(String userName, int opType, long opTs) {
             this.userName = userName;
             this.opType = opType;
@@ -131,7 +132,6 @@ public class ProcessFunctionTest {
 
 
         private ValueState<CountWithTimeStamp> state;
-
 
 
         @Override

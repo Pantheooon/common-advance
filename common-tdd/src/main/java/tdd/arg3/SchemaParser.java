@@ -7,7 +7,7 @@ public class SchemaParser {
 
     private String schema;
 
-    private Map<String,SchemaMeta> schemaMap = new HashMap<>();
+    private Map<String, SchemaMeta> schemaMap = new HashMap<>();
 
     public SchemaParser(String schema) {
         this.schema = schema;
@@ -15,15 +15,14 @@ public class SchemaParser {
     }
 
 
-
-    public void parseSchema(){
+    public void parseSchema() {
         String[] schemas = schema.split(",");
         for (String str : schemas) {
             String[] split = str.split(":");
             String flag = split[0];
             String type = split[1];
             TypeEnum typeEnum = TypeEnum.getTypeEnum(type);
-            schemaMap.put(split[0],new SchemaMeta(typeEnum,flag,type,typeEnum.getDefaultValue()));
+            schemaMap.put(split[0], new SchemaMeta(typeEnum, flag, type, typeEnum.getDefaultValue()));
         }
     }
 
@@ -41,7 +40,7 @@ public class SchemaParser {
     }
 
 
-    private SchemaMeta getSchemaMeta(String flag){
+    private SchemaMeta getSchemaMeta(String flag) {
         return schemaMap.get(flag);
     }
 }

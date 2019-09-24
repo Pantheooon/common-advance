@@ -8,8 +8,8 @@ import java.util.List;
 public interface CommandInvoker {
 
 
-     void execute(List<Command> commands);
+    void execute(List<Command> commands);
 
-     Position get();
+    Position get();
 
 }

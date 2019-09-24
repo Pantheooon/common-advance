@@ -13,11 +13,12 @@ public class ConfigurationPrinter extends Configured implements Tool {
     static {
         Configuration.addDefaultResource("hadoop-local.xml");
     }
+
     @Override
     public int run(String[] args) throws Exception {
         Configuration conf = getConf();
         for (Map.Entry<String, String> entry : conf) {
-            System.out.printf("%s=%s\n",entry.getKey(),entry.getValue());
+            System.out.printf("%s=%s\n", entry.getKey(), entry.getValue());
         }
         return 0;
     }

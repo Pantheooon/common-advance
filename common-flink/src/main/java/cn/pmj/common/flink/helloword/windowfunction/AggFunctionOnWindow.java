@@ -23,10 +23,9 @@ public class AggFunctionOnWindow {
 
     /**
      * windowFunction分为四种,ReduceFunction  AggreateFunction  FoldFunction   ProcessWindowFunction
-     *
+     * <p>
      * 分为两大类:1.增量聚合:ReduceFunction  AggreateFunction  FoldFunction
-     *          2.全量聚合:ProcessWindowFunction
-     *
+     * 2.全量聚合:ProcessWindowFunction
      */
     private static List<Tuple3<String, String, Long>> generateSource() {
         List<Tuple3<String, String, Long>> list = new ArrayList<>();
@@ -48,11 +47,11 @@ public class AggFunctionOnWindow {
 
         //process
 //        SingleOutputStreamOperator<Double> aggregate =
-                env.fromCollection(generateSource()).keyBy(0).countWindow(3).reduce(new MyReduceFunction(),new MyProcessWindowFunction());
+        env.fromCollection(generateSource()).keyBy(0).countWindow(3).reduce(new MyReduceFunction(), new MyProcessWindowFunction());
         //reduce
-       SingleOutputStreamOperator<Tuple3<String, String, Long>> aggregate = env.fromCollection(generateSource()).keyBy(0).countWindow(2).reduce(new MyReduceFunction());
+        SingleOutputStreamOperator<Tuple3<String, String, Long>> aggregate = env.fromCollection(generateSource()).keyBy(0).countWindow(2).reduce(new MyReduceFunction());
 
-       // Increamental 和processWindowsFunction的整合
+        // Increamental 和processWindowsFunction的整合
 
         aggregate.print();
         env.execute();

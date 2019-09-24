@@ -184,7 +184,7 @@ public class AggreationTest extends EsBaseTest {
                 .subAggregation(AggregationBuilders.avg("avg_price").field("price"))
                 .subAggregation(AggregationBuilders.terms("makes").field("make")
                         .subAggregation(AggregationBuilders.min("min_price").field("price"))
-                         .subAggregation(AggregationBuilders.max("max_price").field("price")));
+                        .subAggregation(AggregationBuilders.max("max_price").field("price")));
         SearchRequestBuilder searchRequestBuilder = client.prepareSearch("cars")
                 .setTypes("transactions")
                 .addAggregation(termsAggregationBuilder);

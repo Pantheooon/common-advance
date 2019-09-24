@@ -18,14 +18,14 @@ public class LateDataStream {
 
     static StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
-    private static List<Tuple4<String, String, Long,Long>> generateSource() {
-        List<Tuple4<String, String, Long,Long>> list = new ArrayList<>();
-        list.add(Tuple4.of("class1", "张三", 100L,System.currentTimeMillis()));
-        list.add(Tuple4.of("class1", "李四", 78L,System.currentTimeMillis()));
-        list.add(Tuple4.of("class1", "王五", 99L,System.currentTimeMillis()));
-        list.add(Tuple4.of("class2", "赵六", 81L,System.currentTimeMillis()));
-        list.add(Tuple4.of("class2", "钱七", 59L,System.currentTimeMillis()));
-        list.add(Tuple4.of("class2", "马二", 97L,System.currentTimeMillis()));
+    private static List<Tuple4<String, String, Long, Long>> generateSource() {
+        List<Tuple4<String, String, Long, Long>> list = new ArrayList<>();
+        list.add(Tuple4.of("class1", "张三", 100L, System.currentTimeMillis()));
+        list.add(Tuple4.of("class1", "李四", 78L, System.currentTimeMillis()));
+        list.add(Tuple4.of("class1", "王五", 99L, System.currentTimeMillis()));
+        list.add(Tuple4.of("class2", "赵六", 81L, System.currentTimeMillis()));
+        list.add(Tuple4.of("class2", "钱七", 59L, System.currentTimeMillis()));
+        list.add(Tuple4.of("class2", "马二", 97L, System.currentTimeMillis()));
         return list;
     }
 

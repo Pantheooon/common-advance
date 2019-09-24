@@ -17,6 +17,7 @@ import java.util.List;
 public class StreamApi {
 
     static StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+
     static {
         env.setParallelism(5);
     }
@@ -25,7 +26,7 @@ public class StreamApi {
     public void testDemo() throws Exception {
         ExecutionConfig config = env.getConfig();
         DataStreamSource<String> stream = env.readTextFile("D:\\pantheon\\code\\common-advance\\common-flink\\src\\main\\resources\\test");
-        SingleOutputStreamOperator<Tuple2<String,Integer>> sum = stream.flatMap(new Tokenizer()).keyBy(0).sum(1);
+        SingleOutputStreamOperator<Tuple2<String, Integer>> sum = stream.flatMap(new Tokenizer()).keyBy(0).sum(1);
         sum.print();
         env.execute();
     }
@@ -60,15 +61,15 @@ public class StreamApi {
         env.execute();
     }
 
-    public class MyMapFunction implements MapFunction<String,String> {
+    public class MyMapFunction implements MapFunction<String, String> {
         @Override
         public String map(String value) throws Exception {
-            return value+"sb";
+            return value + "sb";
         }
     }
 
 
-    public class HH<T>{
+    public class HH<T> {
         private T t;
 
         public T getT() {
@@ -80,10 +81,10 @@ public class StreamApi {
         }
     }
 
-    public class MyReduceFunction implements ReduceFunction<Tuple2<String, Integer>>{
+    public class MyReduceFunction implements ReduceFunction<Tuple2<String, Integer>> {
         @Override
         public Tuple2<String, Integer> reduce(Tuple2<String, Integer> value1, Tuple2<String, Integer> value2) throws Exception {
-            return new Tuple2(value1.f0,value1.f1+value1.f1);
+            return new Tuple2(value1.f0, value1.f1 + value1.f1);
         }
     }
 

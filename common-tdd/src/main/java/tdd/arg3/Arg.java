@@ -12,8 +12,8 @@ public class Arg {
         comandLineParser = new ComandLineParser(commad);
     }
 
-    public Object get(String flag){
-        return  schemaParser.getValueByType(flag,comandLineParser.getFlagValue(flag));
+    public Object get(String flag) {
+        return schemaParser.getValueByType(flag, comandLineParser.getFlagValue(flag));
 
     }
 

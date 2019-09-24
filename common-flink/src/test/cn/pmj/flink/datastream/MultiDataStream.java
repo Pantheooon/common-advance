@@ -62,24 +62,24 @@ public class MultiDataStream {
     @Test
     public void testIterator() throws Exception {
         //输入一组数据，我们对他们分别进行减1运算，直到等于0为止
-        DataStream<Long> input=env.generateSequence(0,100);
+        DataStream<Long> input = env.generateSequence(0, 100);
 
         //基于输入流构建IterativeStream(迭代头)
-        IterativeStream<Long> itStream=input.iterate();
+        IterativeStream<Long> itStream = input.iterate();
         //定义迭代逻辑(map fun等)
-        DataStream<Long> minusOne=itStream.map(new MapFunction<Long, Long>() {
+        DataStream<Long> minusOne = itStream.map(new MapFunction<Long, Long>() {
 
             @Override
             public Long map(Long value) throws Exception {
-                return value-1;
+                return value - 1;
             }
         });
 
         //定义反馈流逻辑(从迭代过的流中过滤出符合条件的元素组成的部分流反馈给迭代头进行重复计算的逻辑)
-        DataStream<Long> greaterThanZero=minusOne.filter(new FilterFunction<Long>() {
+        DataStream<Long> greaterThanZero = minusOne.filter(new FilterFunction<Long>() {
             @Override
             public boolean filter(Long value) throws Exception {
-                return value>0;
+                return value > 0;
             }
         });
 
@@ -87,10 +87,10 @@ public class MultiDataStream {
         itStream.closeWith(greaterThanZero);
 
         //定义“终止迭代”的逻辑(符合条件的元素将被分发给下游而不用于进行下一次迭代)
-        DataStream<Long> lessThanZero=minusOne.filter(new FilterFunction<Long>() {
+        DataStream<Long> lessThanZero = minusOne.filter(new FilterFunction<Long>() {
             @Override
             public boolean filter(Long value) throws Exception {
-                return value<=0;
+                return value <= 0;
             }
         });
 

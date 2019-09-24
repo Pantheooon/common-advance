@@ -9,7 +9,6 @@ public class IPParser extends IPSeeker {
     private static IPParser obj = new IPParser(ipFilePath);
 
 
-
     protected IPParser(String ipFilePath) {
         super(ipFilePath);
     }
@@ -123,12 +122,11 @@ public class IPParser extends IPSeeker {
 
     /**
      * ip地址对应的info类
-     *
      */
     public static class RegionInfo {
-        private String country ;
-        private String province ;
-        private String city ;
+        private String country;
+        private String province;
+        private String city;
 
         public String getCountry() {
             return country;

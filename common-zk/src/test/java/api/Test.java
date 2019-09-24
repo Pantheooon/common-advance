@@ -50,8 +50,8 @@ public class Test {
     boolean isLeader = false;
 
     @org.junit.Test
-    public void runForMaster()  {
-        while (true){
+    public void runForMaster() {
+        while (true) {
             try {
                 zooKeeper.create("/master", "1520".getBytes(), OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL);
                 isLeader = true;
@@ -63,7 +63,7 @@ public class Test {
                 break;
             }
 
-            if (checkeMaster()){
+            if (checkeMaster()) {
                 break;
             }
         }

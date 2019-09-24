@@ -12,7 +12,8 @@ import java.io.IOException;
 public class UserEventDeserializationSchema implements KeyedDeserializationSchema<UserEvent> {
     @Override
     public UserEvent deserialize(byte[] messageKey, byte[] message, String topic, int partition, long offset) throws IOException {
-        return JSON.parseObject(new String(message), new TypeReference<UserEvent>() {});
+        return JSON.parseObject(new String(message), new TypeReference<UserEvent>() {
+        });
     }
 
     @Override
@@ -22,6 +23,7 @@ public class UserEventDeserializationSchema implements KeyedDeserializationSchem
 
     @Override
     public TypeInformation<UserEvent> getProducedType() {
-        return TypeInformation.of(new TypeHint<UserEvent>() {});
+        return TypeInformation.of(new TypeHint<UserEvent>() {
+        });
     }
 }

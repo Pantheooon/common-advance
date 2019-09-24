@@ -15,7 +15,7 @@ public class Agent implements InvocationHandler {
         this.game = game;
     }
 
-    public void agent(){
+    public void agent() {
         System.out.println("挂机");
     }
 

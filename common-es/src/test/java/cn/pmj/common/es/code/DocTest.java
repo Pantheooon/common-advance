@@ -82,18 +82,18 @@ public class DocTest extends EsBaseTest {
     @Test
     public void bulkRequest() throws IOException {
         BulkRequestBuilder bulkRequestBuilder = client.prepareBulk();
-      IndexRequestBuilder indexRequest =   client.prepareIndex("twitter","tweet","5").
+        IndexRequestBuilder indexRequest = client.prepareIndex("twitter", "tweet", "5").
                 setSource(jsonBuilder()
                         .startObject()
-                        .field("user","kimchy")
-                        .field("postDate",new Date())
-                        .field("message","anther post").endObject());
+                        .field("user", "kimchy")
+                        .field("postDate", new Date())
+                        .field("message", "anther post").endObject());
 
-        DeleteRequestBuilder deleteRequestBuilder = client.prepareDelete("twitter","tweet","2");
+        DeleteRequestBuilder deleteRequestBuilder = client.prepareDelete("twitter", "tweet", "2");
 
 
-        UpdateRequestBuilder updateRequest = client.prepareUpdate("twitter","tweet","2")
-                .setDoc(jsonBuilder().startObject().field("message","update request").endObject());
+        UpdateRequestBuilder updateRequest = client.prepareUpdate("twitter", "tweet", "2")
+                .setDoc(jsonBuilder().startObject().field("message", "update request").endObject());
 
         bulkRequestBuilder.add(indexRequest).add(deleteRequestBuilder).add(updateRequest).execute().actionGet();
     }

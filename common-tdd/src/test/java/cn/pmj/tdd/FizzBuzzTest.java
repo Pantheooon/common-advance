@@ -11,11 +11,11 @@ public class FizzBuzzTest {
     public void testFizzBuzz() {
         check(1, "1");
         check(2, "2");
-        check(3,"Fizz");
-        check(5,"Buzz");
-        check(15,"FizzBuzz");
-        check(13,"Fizz");
-        check(52,"Buzz");
+        check(3, "Fizz");
+        check(5, "Buzz");
+        check(15, "FizzBuzz");
+        check(13, "Fizz");
+        check(52, "Buzz");
     }
 
     public void check(int raw, String expected) {

@@ -19,7 +19,7 @@ public class ETLApp {
 
     public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException {
         Configuration configuration = new Configuration();
-        configuration.set("mapreduce.jobtracker.staging.root.dir","d://tmp");
+        configuration.set("mapreduce.jobtracker.staging.root.dir", "d://tmp");
 
         Job job = Job.getInstance(configuration);
         job.setJarByClass(ETLApp.class);
@@ -37,7 +37,7 @@ public class ETLApp {
         job.waitForCompletion(true);
     }
 
-    static class ETLMapper extends Mapper<LongWritable, Text, NullWritable,Text>{
+    static class ETLMapper extends Mapper<LongWritable, Text, NullWritable, Text> {
 
         private LogParser logParser = new LogParser();
 
@@ -45,13 +45,13 @@ public class ETLApp {
         protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
             Map<String, String> map = logParser.parse(value.toString());
             StringBuffer sb = new StringBuffer();
-            sb.append(map.get("ip")+"\t");
-            sb.append(map.get("time")+"\t");
-            sb.append(map.get("country")+"\t");
-            sb.append(map.get("province")+"\t");
-            sb.append(map.get("city")+"\t");
-            sb.append(map.get("url")+"\t");
-            context.write(NullWritable.get(),new Text(sb.toString()));
+            sb.append(map.get("ip") + "\t");
+            sb.append(map.get("time") + "\t");
+            sb.append(map.get("country") + "\t");
+            sb.append(map.get("province") + "\t");
+            sb.append(map.get("city") + "\t");
+            sb.append(map.get("url") + "\t");
+            context.write(NullWritable.get(), new Text(sb.toString()));
         }
     }
 }

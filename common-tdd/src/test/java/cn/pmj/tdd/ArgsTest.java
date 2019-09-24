@@ -14,7 +14,7 @@ public class ArgsTest {
         Args args = new Args(schema, command);
         Boolean l = (Boolean) args.getValue("l");
         Assert.assertEquals(l, true);
-        Assert.assertEquals(new Integer(8080),(Integer)args.getValue("p"));
-        Assert.assertEquals("/user/location",args.getValue("s"));
+        Assert.assertEquals(new Integer(8080), (Integer) args.getValue("p"));
+        Assert.assertEquals("/user/location", args.getValue("s"));
     }
 }

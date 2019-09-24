@@ -2,6 +2,7 @@ package cn.pmj.common.flink.helloword.purchaseTracker.model;
 
 import lombok.Data;
 import lombok.ToString;
+
 import java.io.Serializable;
 
 @Data

@@ -10,6 +10,6 @@ import java.util.List;
 @ToString
 public class UserEventContainer {
     private String userId;
-    private List<UserEvent> userEvents=new ArrayList<>();
+    private List<UserEvent> userEvents = new ArrayList<>();
 }
 

@@ -12,5 +12,5 @@ public class EvaluatedResult {
     private String userId;
     private String channel;
     private Integer purchasePathLength;
-    private Map<String,Integer> eventTypeCounts;
+    private Map<String, Integer> eventTypeCounts;
 }

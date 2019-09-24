@@ -32,7 +32,7 @@ public class OperatorState {
         env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
         //设置checkpoint
         env.enableCheckpointing(60000L);
-        CheckpointConfig checkpointConfig=env.getCheckpointConfig();
+        CheckpointConfig checkpointConfig = env.getCheckpointConfig();
         checkpointConfig.setCheckpointingMode(CheckpointingMode.EXACTLY_ONCE);
         checkpointConfig.setMinPauseBetweenCheckpoints(30000L);
         checkpointConfig.setCheckpointTimeout(10000L);
@@ -48,7 +48,7 @@ public class OperatorState {
         env.execute();
     }
 
-    private static class CountWithOperatorState extends RichFlatMapFunction<Long, Tuple2<Integer,String>> implements CheckpointedFunction {
+    private static class CountWithOperatorState extends RichFlatMapFunction<Long, Tuple2<Integer, String>> implements CheckpointedFunction {
 
 
         private transient ListState<Long> checkPointCountList;
@@ -62,16 +62,16 @@ public class OperatorState {
 
         @Override
         public void flatMap(Long value, Collector<Tuple2<Integer, String>> out) throws Exception {
-            if (value == 1){
-                if (listBufferElements.size() >0 ){
+            if (value == 1) {
+                if (listBufferElements.size() > 0) {
                     StringBuffer sb = new StringBuffer();
                     for (Long listBufferElement : listBufferElements) {
-                        sb.append(" "+listBufferElement);
+                        sb.append(" " + listBufferElement);
                     }
-                    out.collect(new Tuple2<>(listBufferElements.size(),sb.toString()));
+                    out.collect(new Tuple2<>(listBufferElements.size(), sb.toString()));
                     listBufferElements.clear();
                 }
-            }else {
+            } else {
                 listBufferElements.add(value);
             }
         }
@@ -90,7 +90,7 @@ public class OperatorState {
             }));
 
             checkPointCountList = context.getOperatorStateStore().getListState(longListStateDescriptor);
-            if (context.isRestored()){
+            if (context.isRestored()) {
                 for (Long aLong : checkPointCountList.get()) {
                     listBufferElements.add(aLong);
                 }

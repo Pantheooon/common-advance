@@ -19,14 +19,15 @@ import java.util.Map;
 public class TimeApi {
 
     StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-    DataStreamSource<Long> dataStreamSource ;
+    DataStreamSource<Long> dataStreamSource;
+
     {
         DataStreamSource<Long> dataStreamSource = env.generateSequence(0, 100);
 
     }
 
     @Test
-    public void testTimeType(){
+    public void testTimeType() {
 
         //进入flink的时间
 //        env.setStreamTimeCharacteristic(TimeCharacteristic.IngestionTime);
@@ -42,7 +43,7 @@ public class TimeApi {
 //    BoundedOutOfOrdernessTimestampExtractor 设定固定的时间间隔来指定watermark落后于timestamp的区间长度,也就是最长容忍到多长时间内的数据到达系统
     //AssignerWithPunctuatedWatermarks 根据接入数据的数量生成
     @Test
-    public void testTimeStampsAndWaterMark(){
+    public void testTimeStampsAndWaterMark() {
         //在sourceFunction中指定
 //        FlinkKafkaConsumer08<Map<String,Long>> sourceFunction = new FlinkKafkaConsumer08<>(null, null, null, null);
 //        //AssignerWithPeriodicWatermarks
@@ -55,12 +56,11 @@ public class TimeApi {
 
 
     //适用于顺序的
-    private class MyAscendingTimestampExtractor extends AscendingTimestampExtractor<Map<String,Long>> {
-
+    private class MyAscendingTimestampExtractor extends AscendingTimestampExtractor<Map<String, Long>> {
 
 
         @Override
-        public long extractAscendingTimestamp(Map<String,Long> element) {
+        public long extractAscendingTimestamp(Map<String, Long> element) {
             return element.get("timestamp");
         }
     }
@@ -78,10 +78,11 @@ public class TimeApi {
     }
 
 
-    private class CustomeAssignerWithPeriodicWatermarks implements AssignerWithPeriodicWatermarks<Tuple3<String,Long,Integer>> {
+    private class CustomeAssignerWithPeriodicWatermarks implements AssignerWithPeriodicWatermarks<Tuple3<String, Long, Integer>> {
         //1秒时延设定,表示在1秒以内的数据延时有效,超过1s的数据认为超时
-        int maxOutOfOrderness= 1000;
+        int maxOutOfOrderness = 1000;
         long currentMaxTimeStamp;
+
         @Nullable
         @Override
         public Watermark getCurrentWatermark() {
@@ -92,7 +93,7 @@ public class TimeApi {
         @Override
         public long extractTimestamp(Tuple3<String, Long, Integer> element, long previousElementTimestamp) {
             long currentTimeStamp = element._2();
-            currentMaxTimeStamp = Math.max(currentTimeStamp,currentMaxTimeStamp);
+            currentMaxTimeStamp = Math.max(currentTimeStamp, currentMaxTimeStamp);
             return currentTimeStamp;
         }
     }
@@ -100,11 +101,11 @@ public class TimeApi {
     /**
      * 根据特殊条件生成watermark
      */
-    private class CustomeAssignerWithPunctuatedWatermarks implements AssignerWithPunctuatedWatermarks<Tuple3<String,Long,Integer>>{
+    private class CustomeAssignerWithPunctuatedWatermarks implements AssignerWithPunctuatedWatermarks<Tuple3<String, Long, Integer>> {
         @Nullable
         @Override
         public Watermark checkAndGetNextWatermark(Tuple3<String, Long, Integer> lastElement, long extractedTimestamp) {
-            if (lastElement._3() == 0){
+            if (lastElement._3() == 0) {
                 return new Watermark(extractedTimestamp);
             }
             return null;

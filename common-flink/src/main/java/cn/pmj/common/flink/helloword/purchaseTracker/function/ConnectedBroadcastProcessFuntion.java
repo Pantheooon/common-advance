@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 public class ConnectedBroadcastProcessFuntion extends KeyedBroadcastProcessFunction<String, UserEvent, Config, EvaluatedResult> {
-    private Config defaultConfig = new Config("APP","2018-01-01",0,3);
+    private Config defaultConfig = new Config("APP", "2018-01-01", 0, 3);
 
     private final MapStateDescriptor<String, Map<String, UserEventContainer>> userMapStateDesc =
             new MapStateDescriptor<>(
@@ -36,7 +36,7 @@ public class ConnectedBroadcastProcessFuntion extends KeyedBroadcastProcessFunct
         String channel = value.getChannel();
         EventType eventType = EventType.valueOf(value.getEventType());
         Config config = ctx.getBroadcastState(Launcher.configStateDescriptor).get(channel);
-        if (config == null){
+        if (config == null) {
             config = defaultConfig;
         }
         final MapState<String, Map<String, UserEventContainer>> state =
@@ -70,10 +70,10 @@ public class ConnectedBroadcastProcessFuntion extends KeyedBroadcastProcessFunct
         String channel = value.getChannel();
         BroadcastState<String, Config> state = ctx.getBroadcastState(Launcher.configStateDescriptor);
         final Config oldConfig = ctx.getBroadcastState(Launcher.configStateDescriptor).get(channel);
-        if(state.contains(channel)) {
+        if (state.contains(channel)) {
             log.info("Configured channel exists: channel=" + channel);
             log.info("Config detail: oldConfig=" + oldConfig + ", newConfig=" + value);
-        }else {
+        } else {
             log.info("Config detail: defaultConfig=" + defaultConfig + ", newConfig=" + value);
         }
         // update config value for configKey
@@ -82,6 +82,7 @@ public class ConnectedBroadcastProcessFuntion extends KeyedBroadcastProcessFunct
 
     /**
      * 计算购买路径长度
+     *
      * @param config
      * @param container
      * @return

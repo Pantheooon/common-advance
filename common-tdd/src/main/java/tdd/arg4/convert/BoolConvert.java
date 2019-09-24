@@ -9,7 +9,7 @@ public class BoolConvert implements Converter<Boolean> {
 
     @Override
     public Boolean convert(String str) {
-        if (str.trim().length() == 0){
+        if (str.trim().length() == 0) {
             str = "true";
         }
         if (!isBooleanStr(str, Boolean.FALSE) && !isBooleanStr(str, Boolean.TRUE)) {

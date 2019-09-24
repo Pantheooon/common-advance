@@ -33,8 +33,8 @@ public class ProvinceStatApp {
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(LongWritable.class);
 
-        FileInputFormat.setInputPaths(job,in);
-        FileOutputFormat.setOutputPath(job,out);
+        FileInputFormat.setInputPaths(job, in);
+        FileOutputFormat.setOutputPath(job, out);
 
         job.waitForCompletion(true);
 
@@ -42,11 +42,7 @@ public class ProvinceStatApp {
     }
 
 
-
-
-
-
-    static class ProvinceMapper extends Mapper<LongWritable, Text,Text,LongWritable>{
+    static class ProvinceMapper extends Mapper<LongWritable, Text, Text, LongWritable> {
 
         private final LongWritable ONE = new LongWritable(1);
 
@@ -58,17 +54,17 @@ public class ProvinceStatApp {
         protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
             Map<String, String> parse = logParser.parse(value.toString());
             String provice = parse.get("province");
-            if (provice == null){
-                context.write(defaultProvice,ONE);
-            }else {
+            if (provice == null) {
+                context.write(defaultProvice, ONE);
+            } else {
 
-                context.write(new Text(provice),ONE);
+                context.write(new Text(provice), ONE);
             }
         }
     }
 
 
-    static class ProviceReducer extends Reducer<Text,LongWritable,Text,LongWritable>{
+    static class ProviceReducer extends Reducer<Text, LongWritable, Text, LongWritable> {
 
         @Override
         protected void reduce(Text key, Iterable<LongWritable> values, Context context) throws IOException, InterruptedException {
@@ -76,9 +72,9 @@ public class ProvinceStatApp {
             Long count = 0L;
 
             for (LongWritable value : values) {
-                count ++;
+                count++;
             }
-            context.write(key,new LongWritable(count));
+            context.write(key, new LongWritable(count));
 
         }
     }

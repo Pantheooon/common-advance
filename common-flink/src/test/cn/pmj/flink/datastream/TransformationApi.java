@@ -18,17 +18,18 @@ public class TransformationApi {
     DataStreamSource<Tuple2<Integer, Integer>> streamSource;
 
     @Before
-    public void setUp(){
-     streamSource = env.fromElements(new Tuple2<>(1, 2), new Tuple2<>(1, 3), new Tuple2<>(1, 4), new Tuple2<>(2, 5));
+    public void setUp() {
+        streamSource = env.fromElements(new Tuple2<>(1, 2), new Tuple2<>(1, 3), new Tuple2<>(1, 4), new Tuple2<>(2, 5));
     }
 
     /**
      * map操作可以用来做数据清洗
      * 用來处理原有的数据产生新的数据流
+     *
      * @throws Exception
      */
     @Test
-    public void  map() throws Exception {
+    public void map() throws Exception {
         SingleOutputStreamOperator<Tuple2<Integer, Integer>> map = streamSource.map(new MyMapFunction());
 //        似乎lambada加return的方式不太好指定
 //        streamSource.returns();
@@ -56,6 +57,7 @@ public class TransformationApi {
 
     /**
      * reduce操作,sum是也是一种特殊的reduce操作,就是对最后的结果进行操作
+     *
      * @throws Exception
      */
     @Test
@@ -75,6 +77,7 @@ public class TransformationApi {
 
     /**
      * 聚合操作,min  minBy  max  maxBy sum
+     *
      * @throws Exception
      */
     @Test
@@ -83,7 +86,7 @@ public class TransformationApi {
         env.execute();
     }
 
-    class MyFlatMapFunction implements FlatMapFunction<Tuple2<Integer,Integer>,Integer>{
+    class MyFlatMapFunction implements FlatMapFunction<Tuple2<Integer, Integer>, Integer> {
 
         @Override
         public void flatMap(Tuple2<Integer, Integer> value, Collector<Integer> out) throws Exception {
@@ -94,7 +97,7 @@ public class TransformationApi {
     private class MyFilter implements FilterFunction<Tuple2<Integer, Integer>> {
         @Override
         public boolean filter(Tuple2<Integer, Integer> value) throws Exception {
-            if (value.f0 == 1){
+            if (value.f0 == 1) {
                 return true;
             }
             return false;
@@ -102,10 +105,10 @@ public class TransformationApi {
     }
 
 
-    class MyMapFunction implements MapFunction<Tuple2<Integer,Integer>,Tuple2<Integer,Integer>> {
+    class MyMapFunction implements MapFunction<Tuple2<Integer, Integer>, Tuple2<Integer, Integer>> {
         @Override
-        public Tuple2<Integer,Integer> map(Tuple2<Integer,Integer> value) throws Exception {
-            value.f0+=1;
+        public Tuple2<Integer, Integer> map(Tuple2<Integer, Integer> value) throws Exception {
+            value.f0 += 1;
             return value;
         }
     }
@@ -115,7 +118,7 @@ public class TransformationApi {
         @Override
         public Tuple2<Integer, Integer> reduce(Tuple2<Integer, Integer> value1, Tuple2<Integer, Integer> value2) throws Exception {
 
-            return Tuple2.of(value1.f0+value2.f0,value1.f1+value2.f1);
+            return Tuple2.of(value1.f0 + value2.f0, value1.f1 + value2.f1);
         }
     }
 }

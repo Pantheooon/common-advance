@@ -6,21 +6,20 @@ import java.util.Map;
 public class SchemaParser {
 
 
-    private SchemaMetaMap  metaMap = new SchemaMetaMap();
+    private SchemaMetaMap metaMap = new SchemaMetaMap();
 
-    private Map<String,SchemaMeta> map = new HashMap<>();
+    private Map<String, SchemaMeta> map = new HashMap<>();
 
     public SchemaParser(String schema) {
-       parseSchema(schema);
+        parseSchema(schema);
     }
 
 
-
-    private void parseSchema(String schema){
+    private void parseSchema(String schema) {
         String[] schemas = schema.split(",");
         for (String str : schemas) {
             String[] split = str.split(":");
-            map.put(split[0],metaMap.get(split[1]));
+            map.put(split[0], metaMap.get(split[1]));
         }
     }
 
@@ -30,7 +29,7 @@ public class SchemaParser {
     }
 
 
-    public SchemaMeta getSchemaMeta(String name){
+    public SchemaMeta getSchemaMeta(String name) {
         return map.get(name);
     }
 }

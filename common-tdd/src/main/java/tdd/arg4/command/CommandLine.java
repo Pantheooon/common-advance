@@ -7,15 +7,16 @@ import static tdd.arg4.util.FlagChecker.*;
 
 
 public class CommandLine {
-    private String command ;
-    private Map<String,String> map = new HashMap<>();
+    private String command;
+    private Map<String, String> map = new HashMap<>();
+
     public CommandLine(String command) {
         this.command = command;
         parseCommand();
     }
 
-    private void parseCommand(){
-        if (command.length() == 0){
+    private void parseCommand() {
+        if (command.length() == 0) {
             return;
         }
         String[] split = command.split("\\s");
@@ -23,14 +24,14 @@ public class CommandLine {
             putEmptyString(split[0]);
             return;
         }
-        for (int i = 0; i < split.length ;i++ ) {
+        for (int i = 0; i < split.length; i++) {
             if (isFlag(split[i])) {
-                if (i==split.length - 1){
+                if (i == split.length - 1) {
                     putEmptyString(split[i]);
                     break;
                 }
                 if (isNotFlag(split[i + 1])) {
-                    map.put(getFlag(split[i]), split[i+1]);
+                    map.put(getFlag(split[i]), split[i + 1]);
                 } else {
                     putEmptyString(split[i]);
                 }
@@ -41,7 +42,7 @@ public class CommandLine {
     }
 
 
-    private void putEmptyString(String flag){
+    private void putEmptyString(String flag) {
         map.put(getFlag(flag), "");
     }
 

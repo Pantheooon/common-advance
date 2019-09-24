@@ -11,6 +11,7 @@ import org.junit.Test;
 public class SinkApi {
 
     static StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+
     @Test
     public void testBase() throws Exception {
         DataStreamSource<Tuple2<String, Integer>> dataStreamSource = env.fromElements(new Tuple2<>("Alex", 18), new Tuple2<>("Peter", 43));
@@ -25,9 +26,9 @@ public class SinkApi {
      * kfaka
      */
     @Test
-    public void thirdPartyTest(){
+    public void thirdPartyTest() {
         DataStreamSource<Tuple2<String, Integer>> dataStreamSource = env.fromElements(new Tuple2<>("Alex", 18), new Tuple2<>("Peter", 43));
-        FlinkKafkaProducer010<Tuple2<String,Integer>> producer = new FlinkKafkaProducer010("localhost:9092", "topic", new SimpleStringSchema());
+        FlinkKafkaProducer010<Tuple2<String, Integer>> producer = new FlinkKafkaProducer010("localhost:9092", "topic", new SimpleStringSchema());
         dataStreamSource.addSink(producer);
     }
 }

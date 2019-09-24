@@ -20,6 +20,7 @@ public class DataSourceApi {
 
 
     static StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+
     @Test
     public void testFileSource() throws Exception {
         //直接读取文本文件
@@ -28,10 +29,10 @@ public class DataSourceApi {
         TypeInformation[] typeInformations = new TypeInformation[4];
         typeInformations[0] = IntegerTypeInfo.INT_TYPE_INFO;
         typeInformations[1] = BasicTypeInfo.STRING_TYPE_INFO;
-        typeInformations[2]=BasicTypeInfo.STRING_TYPE_INFO;
-        typeInformations[3]=BasicTypeInfo.LONG_TYPE_INFO;
+        typeInformations[2] = BasicTypeInfo.STRING_TYPE_INFO;
+        typeInformations[3] = BasicTypeInfo.LONG_TYPE_INFO;
         RowCsvInputFormat rowCsvInputFormat = new RowCsvInputFormat(new Path("d:\\test.csv"), typeInformations);
-        env.readFile(rowCsvInputFormat,"d:\\test.csv").print();
+        env.readFile(rowCsvInputFormat, "d:\\test.csv").print();
         env.execute();
         //也可以用PojoCsvInputFormat封装
     }
@@ -48,18 +49,18 @@ public class DataSourceApi {
      * 適合本地調試
      */
     @Test
-    public void testCollectionSource(){
-        env.fromElements(new Tuple2(1,3),new Tuple2(2,4));
-        env.fromCollection(Arrays.asList("xxx","xxx"),BasicTypeInfo.STRING_TYPE_INFO);
+    public void testCollectionSource() {
+        env.fromElements(new Tuple2(1, 3), new Tuple2(2, 4));
+        env.fromCollection(Arrays.asList("xxx", "xxx"), BasicTypeInfo.STRING_TYPE_INFO);
     }
 
     /**
      * 外部数据源,例如kafka
      */
     @Test
-    public void outerSource(){
+    public void outerSource() {
         Properties properties = new Properties();
-        properties.setProperty("bootstrap.servers","localhost:9092");
+        properties.setProperty("bootstrap.servers", "localhost:9092");
         //....
         SimpleStringSchema simpleStringSchema = new SimpleStringSchema();
         FlinkKafkaConsumer010<String> topic = new FlinkKafkaConsumer010<>("topic", simpleStringSchema, properties);

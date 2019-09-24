@@ -38,7 +38,7 @@ public class CommadParser {
         return getCommandMeta(flag).getValue();
     }
 
-    public CommandMeta getCommandMeta(String flag){
+    public CommandMeta getCommandMeta(String flag) {
         return values.get(flag);
     }
 }

@@ -28,20 +28,21 @@ public class KeyedState {
         env.execute();
     }
 
-    private static class CountWithKeyedState extends RichFlatMapFunction<Tuple2<Long,Long>,Tuple2<Long,Long>> {
+    private static class CountWithKeyedState extends RichFlatMapFunction<Tuple2<Long, Long>, Tuple2<Long, Long>> {
 
-        private transient ValueState<Tuple2<Long,Long>> sum;
+        private transient ValueState<Tuple2<Long, Long>> sum;
+
         @Override
-        public void flatMap(Tuple2<Long, Long> value, Collector<Tuple2<Long,Long>> out) throws Exception {
+        public void flatMap(Tuple2<Long, Long> value, Collector<Tuple2<Long, Long>> out) throws Exception {
             Tuple2<Long, Long> value1 = sum.value();
-            if (value1 == null){
-                value1 = new Tuple2<>(0L,0L);
+            if (value1 == null) {
+                value1 = new Tuple2<>(0L, 0L);
             }
-            value1.f0 +=1;
-            value1.f1+=value.f1;
+            value1.f0 += 1;
+            value1.f1 += value.f1;
             sum.update(value1);
-            if (value1.f0>=3){
-                out.collect(Tuple2.of(value.f0,value1.f1/value1.f0));
+            if (value1.f0 >= 3) {
+                out.collect(Tuple2.of(value.f0, value1.f1 / value1.f0));
                 sum.clear();
             }
         }

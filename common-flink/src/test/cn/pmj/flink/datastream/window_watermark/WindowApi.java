@@ -29,10 +29,9 @@ public class WindowApi extends WaterMark {
 
     /**
      * 滚动窗口
-     *
      */
     @Test
-    public void testTumbling(){
+    public void testTumbling() {
         //event time
         streamSource.keyBy(new MyKeySelector()).window(TumblingEventTimeWindows.of(Time.seconds(5)));
         //process time
@@ -44,7 +43,7 @@ public class WindowApi extends WaterMark {
      * 比较适合非连续型数据处理或者周期性产生数据的场景
      * 根据用户在线上某段时间内的活跃度对用户行为数据进行统计
      */
-    public void testSessionWindow(){
+    public void testSessionWindow() {
         //基于event time的session
         streamSource.keyBy(new MyKeySelector()).window(EventTimeSessionWindows.withGap(Time.milliseconds(10)));
 
@@ -64,9 +63,9 @@ public class WindowApi extends WaterMark {
      * 滑动窗口
      */
     @Test
-    public void testSliding(){
+    public void testSliding() {
         //窗口1小时,滑动5s
-        streamSource.keyBy(new MyKeySelector()).window(SlidingAlignedProcessingTimeWindows.of(Time.hours(1),Time.seconds(5)));
+        streamSource.keyBy(new MyKeySelector()).window(SlidingAlignedProcessingTimeWindows.of(Time.hours(1), Time.seconds(5)));
 
     }
 

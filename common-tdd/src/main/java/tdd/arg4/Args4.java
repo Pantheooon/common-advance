@@ -12,8 +12,8 @@ public class Args4 {
     private CommandLine commandLine;
 
     public Args4(String commandLine, String schema) {
-            this.schema = new CommandLineSchema(schema);
-            this.commandLine = new CommandLine(commandLine);
+        this.schema = new CommandLineSchema(schema);
+        this.commandLine = new CommandLine(commandLine);
     }
 
     public Object getValue(String flag) {
@@ -21,7 +21,7 @@ public class Args4 {
         String value = commandLine.getValue(flag);
         SchemaSpc spc = schema.of(flag);
         if (value == null) {
-          return null;
+            return null;
         }
         return spc.convertValue(value);
     }

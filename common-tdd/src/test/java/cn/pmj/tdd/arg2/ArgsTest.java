@@ -15,19 +15,19 @@ public class ArgsTest {
     @Test
     public void test_regular() {
 
-        check("l", true,commad);
-        check("p", 8080,commad);
-        check("s", "/user/location",commad);
+        check("l", true, commad);
+        check("p", 8080, commad);
+        check("s", "/user/location", commad);
     }
 
     @Test
     public void test_irregular() {
-        check("l", false,commadTwo);
-        check("p", -98,commadTwo);
-        check("s", "/s",commadTwo);
+        check("l", false, commadTwo);
+        check("p", -98, commadTwo);
+        check("s", "/s", commadTwo);
     }
 
-    public void check(String name, Object value,String commands) {
+    public void check(String name, Object value, String commands) {
         ArgsParser parser = new ArgsParser(commands, schema);
         Assert.assertEquals(parser.getValueByName(name), value);
     }

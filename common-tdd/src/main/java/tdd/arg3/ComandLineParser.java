@@ -13,15 +13,15 @@ public class ComandLineParser {
 
     private String command;
 
-    private Map<String,String> map = new HashMap<>();
+    private Map<String, String> map = new HashMap<>();
 
     public ComandLineParser(String commad) {
         this.command = commad;
         parseCommand();
     }
 
-    public void parseCommand(){
-        if (command.length() == 0){
+    public void parseCommand() {
+        if (command.length() == 0) {
             return;
         }
         String[] split = command.split("\\s");
@@ -29,14 +29,14 @@ public class ComandLineParser {
             putEmptyString(split[0]);
             return;
         }
-        for (int i = 0; i < split.length ;i++ ) {
+        for (int i = 0; i < split.length; i++) {
             if (isFlag(split[i])) {
-                if (i==split.length - 1){
+                if (i == split.length - 1) {
                     putEmptyString(split[i]);
                     break;
                 }
                 if (isNotFlag(split[i + 1])) {
-                    map.put(getFlag(split[i]), split[i+1]);
+                    map.put(getFlag(split[i]), split[i + 1]);
                 } else {
                     putEmptyString(split[i]);
                 }
@@ -47,7 +47,7 @@ public class ComandLineParser {
     }
 
 
-    private void putEmptyString(String flag){
+    private void putEmptyString(String flag) {
         map.put(getFlag(flag), "");
     }
 

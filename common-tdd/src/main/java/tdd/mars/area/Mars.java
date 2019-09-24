@@ -6,7 +6,7 @@ import lombok.Data;
 public class Mars {
 
 
-    private  int x;
+    private int x;
 
     private int y;
 

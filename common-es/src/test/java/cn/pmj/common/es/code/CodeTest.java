@@ -85,7 +85,10 @@ public class CodeTest extends EsBaseTest {
     }
 
     @Test
-    public void setMappings(){}{
+    public void setMappings() {
+    }
+
+    {
         IndicesAdminClient indices = client.admin().indices();
         indices.prepareCreate("pmj2").addMapping("local").get();
     }

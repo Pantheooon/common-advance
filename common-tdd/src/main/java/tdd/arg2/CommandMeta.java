@@ -8,13 +8,12 @@ import lombok.Data;
 public class CommandMeta {
 
 
-
     private String flag;
 
     private String value;
 
 
-    public boolean isDefault(String defaultValue){
+    public boolean isDefault(String defaultValue) {
         return this.value.equals(defaultValue);
     }
 }

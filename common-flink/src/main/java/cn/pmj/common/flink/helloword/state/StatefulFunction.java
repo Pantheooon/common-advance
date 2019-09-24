@@ -45,12 +45,12 @@ public class StatefulFunction {
             @Override
             public void flatMap(Tuple2<Integer, Long> value, Collector<Long> out) throws Exception {
                 Long leastVaule = valueState.value();
-                if (leastVaule == null){
+                if (leastVaule == null) {
                     leastVaule = value.f1;
                 }
-                if (value.f1 < leastVaule){
+                if (value.f1 < leastVaule) {
                     out.collect(value.f1);
-                }else {
+                } else {
                     valueState.update(value.f1);
                 }
             }

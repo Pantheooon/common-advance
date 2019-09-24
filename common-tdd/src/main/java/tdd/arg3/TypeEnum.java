@@ -3,7 +3,7 @@ package tdd.arg3;
 public enum TypeEnum {
 
 
-    BOOL{
+    BOOL {
         @Override
         public String getTypeName() {
             return "bool";
@@ -19,7 +19,7 @@ public enum TypeEnum {
             return Boolean.TRUE;
         }
     },
-    STR{
+    STR {
         @Override
         public String getTypeName() {
             return "str";
@@ -35,7 +35,7 @@ public enum TypeEnum {
             return "";
         }
     },
-    INT{
+    INT {
         @Override
         public String getTypeName() {
             return "int";
@@ -53,17 +53,17 @@ public enum TypeEnum {
     };
 
 
-    public  Object getValue(String value){
-        if (value == null || value.length() == 0){
+    public Object getValue(String value) {
+        if (value == null || value.length() == 0) {
             return getDefaultValue();
         }
         return handleValue(value);
     }
 
-    public static TypeEnum getTypeEnum(String flag){
+    public static TypeEnum getTypeEnum(String flag) {
         TypeEnum[] values = TypeEnum.values();
         for (TypeEnum value : values) {
-            if (value.getTypeName().equals(flag)){
+            if (value.getTypeName().equals(flag)) {
                 return value;
             }
         }

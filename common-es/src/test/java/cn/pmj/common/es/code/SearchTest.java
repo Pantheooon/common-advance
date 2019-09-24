@@ -20,8 +20,8 @@ import org.junit.Test;
 public class SearchTest extends EsBaseTest {
 
     @Test
-    public void test(){
-        QueryBuilder matchQuery = QueryBuilders.matchQuery("title","python").operator(Operator.AND);
+    public void test() {
+        QueryBuilder matchQuery = QueryBuilders.matchQuery("title", "python").operator(Operator.AND);
         HighlightBuilder highlightBuilder = new HighlightBuilder().field("title").preTags("<span stype = \"color:red\"")
                 .postTags("</span>");
 
@@ -36,7 +36,7 @@ public class SearchTest extends EsBaseTest {
     }
 
     @Test
-    public void search(){
+    public void search() {
         //全文...
         //MatchAllQueryBuilder matchAllQueryBuilder = QueryBuilders.matchAllQuery();
         //MatchPhraseQueryBuilder matchPhraseQueryBuilder = QueryBuilders.matchPhraseQuery();
@@ -52,7 +52,7 @@ public class SearchTest extends EsBaseTest {
     }
 
     @Test
-    public void aggreationMax(){
+    public void aggreationMax() {
         MaxAggregationBuilder field = AggregationBuilders.max("agg").field("price");
         SearchResponse books = client.prepareSearch("books").addAggregation(field).get();
         Max agg = books.getAggregations().get("agg");
@@ -61,17 +61,17 @@ public class SearchTest extends EsBaseTest {
     }
 
     @Test
-    public void aggreationBucket(){
+    public void aggreationBucket() {
         TermsAggregationBuilder field = AggregationBuilders.terms("per_count").field("language");
         SearchResponse books = client.prepareSearch("books").addAggregation(field).execute().actionGet();
         Terms perCount = books.getAggregations().get("per_count");
         for (Terms.Bucket bucket : perCount.getBuckets()) {
-            System.out.println(bucket.getKey()+":"+bucket.getDocCount());
+            System.out.println(bucket.getKey() + ":" + bucket.getDocCount());
         }
     }
 
     @Test
-    public void filter(){
+    public void filter() {
         FilterAggregationBuilder filter = AggregationBuilders.filter("agg", QueryBuilders.termQuery("title", "java"));
         SearchResponse books = client.prepareSearch("books").addAggregation(filter).execute().actionGet();
         Filter agg = books.getAggregations().get("agg");

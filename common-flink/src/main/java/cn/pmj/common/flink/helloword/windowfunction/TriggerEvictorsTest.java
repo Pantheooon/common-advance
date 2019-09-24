@@ -42,17 +42,17 @@ public class TriggerEvictorsTest {
             @Override
             public void evictBefore(Iterable elements, int size, Window window, EvictorContext evictorContext) {
                 Iterator iterator = elements.iterator();
-                while (iterator.hasNext()){
+                while (iterator.hasNext()) {
                     Object next = iterator.next();
                     iterator.remove();
                 }
             }
         }).process(new ProcessWindowFunction<Tuple3<String, String, Long>, Object, Tuple, GlobalWindow>() {
-                    @Override
-                    public void process(Tuple tuple, Context context, Iterable<Tuple3<String, String, Long>> elements, Collector<Object> out) throws Exception {
-                        System.out.println(elements);
-                    }
-                });
+            @Override
+            public void process(Tuple tuple, Context context, Iterable<Tuple3<String, String, Long>> elements, Collector<Object> out) throws Exception {
+                System.out.println(elements);
+            }
+        });
         env.execute();
     }
 
@@ -63,11 +63,11 @@ public class TriggerEvictorsTest {
         env.fromCollection(generateSource()).keyBy(0).
                 countWindow(3).trigger(CountTrigger.of(3)).
                 process(new ProcessWindowFunction<Tuple3<String, String, Long>, Object, Tuple, GlobalWindow>() {
-            @Override
-            public void process(Tuple tuple, Context context, Iterable<Tuple3<String, String, Long>> elements, Collector<Object> out) throws Exception {
-                System.out.println(elements);
-            }
-        });
+                    @Override
+                    public void process(Tuple tuple, Context context, Iterable<Tuple3<String, String, Long>> elements, Collector<Object> out) throws Exception {
+                        System.out.println(elements);
+                    }
+                });
         env.execute();
     }
 

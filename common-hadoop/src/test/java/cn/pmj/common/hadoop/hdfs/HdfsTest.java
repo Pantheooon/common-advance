@@ -20,9 +20,10 @@ public class HdfsTest {
     FileSystem fileSystem = null;
 
     Configuration configuration = new Configuration();
+
     @Before
     public void setUp() throws IOException, InterruptedException {
-        configuration.set("dfs.client.use.datanode.hostname","true");
+        configuration.set("dfs.client.use.datanode.hostname", "true");
         URI uri = URI.create("hdfs://pmj:8020");
         fileSystem = FileSystem.get(uri, configuration, "root");
     }
@@ -45,7 +46,7 @@ public class HdfsTest {
      * 查看HDFS内容
      */
     @Test
-    public void text()throws Exception {
+    public void text() throws Exception {
         FSDataInputStream in = fileSystem.open(new Path("/test.txt"));
         IOUtils.copyBytes(in, System.out, 1024);
     }
@@ -54,7 +55,7 @@ public class HdfsTest {
      * 创建文件
      */
     @Test
-    public void create()throws Exception {
+    public void create() throws Exception {
 //        FSDataOutputStream out = fileSystem.create(new Path("/hdfsapi/test/a.txt"));
         FSDataOutputStream out = fileSystem.create(new Path("/hdfsapi/test/c.txt"));
         out.writeUTF("hello pk: replication 1");
@@ -64,6 +65,7 @@ public class HdfsTest {
 
     /**
      * 测试文件名更改
+     *
      * @throws Exception
      */
     @Test
@@ -83,7 +85,7 @@ public class HdfsTest {
     public void copyFromLocalFile() throws Exception {
         Path src = new Path("d://books.json");
         Path dst = new Path("/hdfsapi/test/");
-        fileSystem.copyFromLocalFile(src,dst);
+        fileSystem.copyFromLocalFile(src, dst);
     }
 
     /**
@@ -101,7 +103,7 @@ public class HdfsTest {
                     }
                 });
 
-        IOUtils.copyBytes(in, out ,4096,true);
+        IOUtils.copyBytes(in, out, 4096, true);
 
     }
 
@@ -112,7 +114,7 @@ public class HdfsTest {
     public void copyToLocalFile() throws Exception {
         Path src = new Path("/test.txt");
         Path dst = new Path("d:\\123.txt");
-        fileSystem.copyToLocalFile(false,src, dst,true);
+        fileSystem.copyToLocalFile(false, src, dst, true);
     }
 
 
@@ -123,7 +125,7 @@ public class HdfsTest {
     public void listFiles() throws Exception {
         FileStatus[] statuses = fileSystem.listStatus(new Path("/hdfsapi/test"));
 
-        for(FileStatus file : statuses) {
+        for (FileStatus file : statuses) {
             String isDir = file.isDirectory() ? "文件夹" : "文件";
             String permission = file.getPermission().toString();
             short replication = file.getReplication();
@@ -172,12 +174,12 @@ public class HdfsTest {
     public void getFileBlockLocations() throws Exception {
 
         FileStatus fileStatus = fileSystem.getFileStatus(new Path("/hdfsapi/test/jdk.tgz"));
-        BlockLocation[] blocks = fileSystem.getFileBlockLocations(fileStatus,0,fileStatus.getLen());
+        BlockLocation[] blocks = fileSystem.getFileBlockLocations(fileStatus, 0, fileStatus.getLen());
 
-        for(BlockLocation block : blocks) {
+        for (BlockLocation block : blocks) {
 
-            for(String name: block.getNames()) {
-                System.out.println(name +" : " + block.getOffset() + " : " + block.getLength() + " : " + block.getHosts());
+            for (String name : block.getNames()) {
+                System.out.println(name + " : " + block.getOffset() + " : " + block.getLength() + " : " + block.getHosts());
             }
         }
     }
@@ -196,7 +198,6 @@ public class HdfsTest {
     public void testReplication() {
         System.out.println(configuration.get("dfs.replication"));
     }
-
 
 
     @Test

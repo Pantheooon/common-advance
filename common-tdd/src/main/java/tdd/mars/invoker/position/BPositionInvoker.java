@@ -15,12 +15,12 @@ public class BPositionInvoker extends AbstractPositionInvoker {
     }
 
     @Override
-    protected void whenN( Position position) {
+    protected void whenN(Position position) {
 
     }
 
     @Override
-    protected void whenS( Position position) {
+    protected void whenS(Position position) {
 
     }
 

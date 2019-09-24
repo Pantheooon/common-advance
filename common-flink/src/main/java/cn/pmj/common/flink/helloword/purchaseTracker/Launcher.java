@@ -23,7 +23,7 @@ import org.apache.flink.streaming.api.environment.CheckpointConfig;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.functions.timestamps.BoundedOutOfOrdernessTimestampExtractor;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer010;
-import  org.apache.flink.streaming.api.windowing.time.Time;
+import org.apache.flink.streaming.api.windowing.time.Time;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaProducer010;
 
 import java.util.Properties;
@@ -47,23 +47,23 @@ public class Launcher {
         env.getConfig().setGlobalJobParameters(params);
         env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
 
-        env.enableCheckpointing(60*1000);
+        env.enableCheckpointing(60 * 1000);
         CheckpointConfig checkpointConfig = env.getCheckpointConfig();
-        checkpointConfig.setMinPauseBetweenCheckpoints(30*1000);
-        checkpointConfig.setCheckpointTimeout(10*1000);
+        checkpointConfig.setMinPauseBetweenCheckpoints(30 * 1000);
+        checkpointConfig.setCheckpointTimeout(10 * 1000);
         checkpointConfig.enableExternalizedCheckpoints(CheckpointConfig.ExternalizedCheckpointCleanup.RETAIN_ON_CANCELLATION);
 
         //backend
         env.setStateBackend(new MemoryStateBackend());
         //restart
-        env.setRestartStrategy(RestartStrategies.fixedDelayRestart(0,org.apache.flink.api.common.time.Time.minutes(30)));
-        Properties consumerProps=new Properties();
+        env.setRestartStrategy(RestartStrategies.fixedDelayRestart(0, org.apache.flink.api.common.time.Time.minutes(30)));
+        Properties consumerProps = new Properties();
         consumerProps.setProperty(BOOTSTRAP_SERVERS, params.get(BOOTSTRAP_SERVERS));
         consumerProps.setProperty(GROUP_ID, params.get(GROUP_ID));
 
 
         //事件流
-        FlinkKafkaConsumer010<UserEvent> kafkaUserEventSource = new FlinkKafkaConsumer010<UserEvent>(params.get(INPUT_EVENT_TOPIC),new UserEventDeserializationSchema(),consumerProps);
+        FlinkKafkaConsumer010<UserEvent> kafkaUserEventSource = new FlinkKafkaConsumer010<UserEvent>(params.get(INPUT_EVENT_TOPIC), new UserEventDeserializationSchema(), consumerProps);
         KeyedStream<UserEvent, String> userEventStringKeyedStream = env.addSource(kafkaUserEventSource).
                 assignTimestampsAndWatermarks(new CustomWatermarkExtractor(Time.hours(24))).
                 keyBy(new KeySelector<UserEvent, String>() {
@@ -75,11 +75,11 @@ public class Launcher {
 
         //配置流
         FlinkKafkaConsumer010<Config> configStream
-        = new FlinkKafkaConsumer010<Config>(params.get(INPUT_CONFIG_TOPIC),new ConfigDeserializationSchema(),consumerProps);
+                = new FlinkKafkaConsumer010<Config>(params.get(INPUT_CONFIG_TOPIC), new ConfigDeserializationSchema(), consumerProps);
 
         BroadcastStream<Config> configBroadcastStream = env.addSource(configStream).broadcast(configStateDescriptor);
         //链接两个流
-        Properties producerProps=new Properties();
+        Properties producerProps = new Properties();
         producerProps.setProperty(BOOTSTRAP_SERVERS, params.get(BOOTSTRAP_SERVERS));
         producerProps.setProperty(RETRIES, "3");
 
@@ -98,12 +98,12 @@ public class Launcher {
     }
 
 
-
     private static class CustomWatermarkExtractor extends BoundedOutOfOrdernessTimestampExtractor<UserEvent> {
 
         public CustomWatermarkExtractor(org.apache.flink.streaming.api.windowing.time.Time maxOutOfOrderness) {
             super(maxOutOfOrderness);
         }
+
         @Override
         public long extractTimestamp(UserEvent element) {
             return element.getEventTime();

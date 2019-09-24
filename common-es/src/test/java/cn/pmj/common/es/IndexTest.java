@@ -20,7 +20,6 @@ import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
 public class IndexTest extends EsBaseTest {
 
 
-
     @org.junit.Test
     public void createIndex() throws IOException {
         CreateIndexRequestBuilder megacorp = client.admin().indices().prepareCreate("megacorp");
@@ -38,23 +37,22 @@ public class IndexTest extends EsBaseTest {
     }
 
 
-
     @Test
     public void createMapping() throws IOException {
         IndexRequestBuilder indexRequestBuilder = client.prepareIndex("megacorp", "employee")
                 .setSource(jsonBuilder().startObject().
-                        field("first_name","keyword").
-                        field("last_name","keywprd").
-                        field("age","int").
-                        field("about","text")
-                        .field("interests","array").endObject());
+                        field("first_name", "keyword").
+                        field("last_name", "keywprd").
+                        field("age", "int").
+                        field("about", "text")
+                        .field("interests", "array").endObject());
         IndexResponse indexResponse = indexRequestBuilder.get();
         System.out.println(indexResponse.status());
     }
 
 
     @Test
-    public void getIndex(){
+    public void getIndex() {
         GetRequestBuilder getRequestBuilder = client.prepareGet("megacorp", "employee", "1");
         GetResponse documentFields = getRequestBuilder.get();
         Map<String, DocumentField> fields = documentFields.getFields();
@@ -62,11 +60,9 @@ public class IndexTest extends EsBaseTest {
     }
 
 
-
-
     @org.junit.Test
     public void deleteIndex() {
-        String s ="blog,blog3,book,books,patheon,range_test_index,weather";
+        String s = "blog,blog3,book,books,patheon,range_test_index,weather";
         String[] split = s.split(",");
         for (String s1 : split) {
             DeleteIndexRequestBuilder megacorp = client.admin().indices().prepareDelete(s1);

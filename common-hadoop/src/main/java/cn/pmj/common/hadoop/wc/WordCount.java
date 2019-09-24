@@ -41,7 +41,7 @@ public class WordCount {
      */
     public static void main(String[] args) throws IOException {
         HDFSMapper mapper = new WordCountMapper();
-        RemoteIterator<LocatedFileStatus>files= read("/pmj");
+        RemoteIterator<LocatedFileStatus> files = read("/pmj");
         while (files.hasNext()) {
             LocatedFileStatus next = files.next();
             FSDataInputStream open = fileSystem.open(next.getPath());
@@ -60,7 +60,6 @@ public class WordCount {
     }
 
 
-
     public static RemoteIterator<LocatedFileStatus> read(String inputPath) throws IOException {
         Path input = new Path(inputPath);
         return fileSystem.listFiles(input, false);
@@ -70,7 +69,7 @@ public class WordCount {
         FSDataOutputStream out = fileSystem.create(new Path(outPath));
         Set<Map.Entry<String, Integer>> entries = context.getContext().entrySet();
         for (Map.Entry<String, Integer> entry : entries) {
-            String result = entry.getKey().toString() + "\t" + entry.getValue().toString()+"\n";
+            String result = entry.getKey().toString() + "\t" + entry.getValue().toString() + "\n";
             out.write(result.getBytes());
             out.flush();
         }

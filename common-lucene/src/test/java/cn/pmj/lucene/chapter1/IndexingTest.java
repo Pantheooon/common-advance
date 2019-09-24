@@ -2,18 +2,18 @@ package cn.pmj.lucene.chapter1;
 
 /**
  * Copyright Manning Publications Co.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific lan      
-*/
+ * See the License for the specific lan
+ */
 
 import cn.pmj.lucene.common.TestUtil;
 import junit.framework.TestCase;
@@ -34,83 +34,83 @@ import java.io.IOException;
 
 // From chapter 2
 public class IndexingTest extends TestCase {
-  protected String[] ids = {"1", "2"};
-  protected String[] unindexed = {"Netherlands", "Italy"};
-  protected String[] unstored = {"Amsterdam has lots of bridges",
-                                 "Venice has lots of canals"};
-  protected String[] text = {"Amsterdam", "Venice"};
+    protected String[] ids = {"1", "2"};
+    protected String[] unindexed = {"Netherlands", "Italy"};
+    protected String[] unstored = {"Amsterdam has lots of bridges",
+            "Venice has lots of canals"};
+    protected String[] text = {"Amsterdam", "Venice"};
 
-  private Directory directory;
+    private Directory directory;
 
-  protected void setUp() throws Exception {     //1
-    directory = new RAMDirectory();
+    protected void setUp() throws Exception {     //1
+        directory = new RAMDirectory();
 
-    IndexWriter writer = getWriter();           //2
-    //开启调试
-    writer.setInfoStream(System.out);
+        IndexWriter writer = getWriter();           //2
+        //开启调试
+        writer.setInfoStream(System.out);
 
-    for (int i = 0; i < ids.length; i++) {      //3
-      Document doc = new Document();
-      doc.add(new Field("id", ids[i],
-                        Field.Store.YES,
-                        Field.Index.NOT_ANALYZED));
-      doc.add(new Field("country", unindexed[i],
-                        Field.Store.YES,
-                        Field.Index.NO));
-      doc.add(new Field("contents", unstored[i],
-                        Field.Store.NO,
-                        Field.Index.NOT_ANALYZED));
-      doc.add(new Field("city", text[i],
-                        Field.Store.YES,
-                        Field.Index.ANALYZED));
-      writer.addDocument(doc);
+        for (int i = 0; i < ids.length; i++) {      //3
+            Document doc = new Document();
+            doc.add(new Field("id", ids[i],
+                    Field.Store.YES,
+                    Field.Index.NOT_ANALYZED));
+            doc.add(new Field("country", unindexed[i],
+                    Field.Store.YES,
+                    Field.Index.NO));
+            doc.add(new Field("contents", unstored[i],
+                    Field.Store.NO,
+                    Field.Index.NOT_ANALYZED));
+            doc.add(new Field("city", text[i],
+                    Field.Store.YES,
+                    Field.Index.ANALYZED));
+            writer.addDocument(doc);
+        }
+        writer.close();
     }
-    writer.close();
-  }
 
 
-  public void testContent() throws IOException {
-    IndexSearcher indexSearcher = new IndexSearcher(directory);
-    TopDocs id = indexSearcher.search(new TermQuery(new Term("contents", "Amsterdam has lots of bridges")), 1);
-    assertEquals(id.totalHits,1);
-  }
+    public void testContent() throws IOException {
+        IndexSearcher indexSearcher = new IndexSearcher(directory);
+        TopDocs id = indexSearcher.search(new TermQuery(new Term("contents", "Amsterdam has lots of bridges")), 1);
+        assertEquals(id.totalHits, 1);
+    }
 
-  private IndexWriter getWriter() throws IOException {            // 2
-    return new IndexWriter(directory, new WhitespaceAnalyzer(),   // 2
-                           IndexWriter.MaxFieldLength.UNLIMITED); // 2
-  }
+    private IndexWriter getWriter() throws IOException {            // 2
+        return new IndexWriter(directory, new WhitespaceAnalyzer(),   // 2
+                IndexWriter.MaxFieldLength.UNLIMITED); // 2
+    }
 
-  protected int getHitCount(String fieldName, String searchString)
-    throws IOException {
-    IndexSearcher searcher = new IndexSearcher(directory); //4
-    Term t = new Term(fieldName, searchString);
-    Query query = new TermQuery(t);                        //5
-    int hitCount = TestUtil.hitCount(searcher, query);     //6
-    searcher.close();
-    return hitCount;
-  }
+    protected int getHitCount(String fieldName, String searchString)
+            throws IOException {
+        IndexSearcher searcher = new IndexSearcher(directory); //4
+        Term t = new Term(fieldName, searchString);
+        Query query = new TermQuery(t);                        //5
+        int hitCount = TestUtil.hitCount(searcher, query);     //6
+        searcher.close();
+        return hitCount;
+    }
 
-  public void testIndexWriter() throws IOException {
-    IndexWriter writer = getWriter();
-    assertEquals(ids.length, writer.numDocs());            //7
-    writer.close();
-  }
+    public void testIndexWriter() throws IOException {
+        IndexWriter writer = getWriter();
+        assertEquals(ids.length, writer.numDocs());            //7
+        writer.close();
+    }
 
-  public void testIndexReader() throws IOException, InterruptedException {
-    IndexReader reader = IndexReader.open(directory);
-    IndexSearcher indexSearcher = new IndexSearcher(directory);
-    IndexWriter writer = getWriter();
-    assertEquals(2, writer.numDocs()); //A
-    writer.deleteDocuments(new Term("id", "1"));
-    writer.optimize();
-    writer.commit();//B
-    assertEquals(ids.length, reader.maxDoc());             //8
-    assertEquals(ids.length, reader.numDocs());            //8
-    reader.close();
+    public void testIndexReader() throws IOException, InterruptedException {
+        IndexReader reader = IndexReader.open(directory);
+        IndexSearcher indexSearcher = new IndexSearcher(directory);
+        IndexWriter writer = getWriter();
+        assertEquals(2, writer.numDocs()); //A
+        writer.deleteDocuments(new Term("id", "1"));
+        writer.optimize();
+        writer.commit();//B
+        assertEquals(ids.length, reader.maxDoc());             //8
+        assertEquals(ids.length, reader.numDocs());            //8
+        reader.close();
 
-    TopDocs id = indexSearcher.search(new TermQuery(new Term("id", "1")), 1);
-    assert id.totalHits == 1;
-  }
+        TopDocs id = indexSearcher.search(new TermQuery(new Term("id", "1")), 1);
+        assert id.totalHits == 1;
+    }
 
   /*
     #1 Run before every test
@@ -123,28 +123,28 @@ public class IndexingTest extends TestCase {
     #8 Verify reader document count
   */
 
-  public void testDeleteBeforeOptimize() throws IOException {
-    IndexWriter writer = getWriter();
-    assertEquals(2, writer.numDocs()); //A
-    writer.deleteDocuments(new Term("id", "1"));  //B
-    writer.commit();
-    assertTrue(writer.hasDeletions());    //1
-    assertEquals(2, writer.maxDoc());    //2
-    assertEquals(1, writer.numDocs());   //2   
-    writer.close();
-  }
+    public void testDeleteBeforeOptimize() throws IOException {
+        IndexWriter writer = getWriter();
+        assertEquals(2, writer.numDocs()); //A
+        writer.deleteDocuments(new Term("id", "1"));  //B
+        writer.commit();
+        assertTrue(writer.hasDeletions());    //1
+        assertEquals(2, writer.maxDoc());    //2
+        assertEquals(1, writer.numDocs());   //2
+        writer.close();
+    }
 
-  public void testDeleteAfterOptimize() throws IOException {
-    IndexWriter writer = getWriter();
-    assertEquals(2, writer.numDocs());
-    writer.deleteDocuments(new Term("id", "1"));
-    writer.optimize();                //3
-    writer.commit();
-    assertFalse(writer.hasDeletions());
-    assertEquals(1, writer.maxDoc());  //C
-    assertEquals(1, writer.numDocs()); //C    
-    writer.close();
-  }
+    public void testDeleteAfterOptimize() throws IOException {
+        IndexWriter writer = getWriter();
+        assertEquals(2, writer.numDocs());
+        writer.deleteDocuments(new Term("id", "1"));
+        writer.optimize();                //3
+        writer.commit();
+        assertFalse(writer.hasDeletions());
+        assertEquals(1, writer.maxDoc());  //C
+        assertEquals(1, writer.numDocs()); //C
+        writer.close();
+    }
 
   /*
     #A 2 docs in the index
@@ -153,37 +153,37 @@ public class IndexingTest extends TestCase {
     #1 Index contains deletions
     #2 1 indexed document, 1 deleted document
     #3 Optimize compacts deletes
-  */  
+  */
 
 
-  public void testUpdate() throws IOException {
+    public void testUpdate() throws IOException {
 
-    assertEquals(1, getHitCount("city", "Amsterdam"));
+        assertEquals(1, getHitCount("city", "Amsterdam"));
 
-    IndexWriter writer = getWriter();
+        IndexWriter writer = getWriter();
 
-    Document doc = new Document();                   //A
-    doc.add(new Field("id", "1",
-                      Field.Store.YES,
-                      Field.Index.NOT_ANALYZED));    //A
-    doc.add(new Field("country", "Netherlands",
-                      Field.Store.YES,
-                      Field.Index.NO));              //A
-    doc.add(new Field("contents",
-                      "Den Haag has a lot of museums",
-                      Field.Store.NO,
-                      Field.Index.ANALYZED));       //A
-    doc.add(new Field("city", "Den Haag",
-                      Field.Store.YES,
-                      Field.Index.ANALYZED));       //A
+        Document doc = new Document();                   //A
+        doc.add(new Field("id", "1",
+                Field.Store.YES,
+                Field.Index.NOT_ANALYZED));    //A
+        doc.add(new Field("country", "Netherlands",
+                Field.Store.YES,
+                Field.Index.NO));              //A
+        doc.add(new Field("contents",
+                "Den Haag has a lot of museums",
+                Field.Store.NO,
+                Field.Index.ANALYZED));       //A
+        doc.add(new Field("city", "Den Haag",
+                Field.Store.YES,
+                Field.Index.ANALYZED));       //A
 
-    writer.updateDocument(new Term("id", "1"),       //B
-                          doc);                      //B
-    writer.close();
+        writer.updateDocument(new Term("id", "1"),       //B
+                doc);                      //B
+        writer.close();
 
-    assertEquals(0, getHitCount("city", "Amsterdam"));//C   
-    assertEquals(1, getHitCount("city", "Haag"));     //D  
-  }
+        assertEquals(0, getHitCount("city", "Amsterdam"));//C
+        assertEquals(1, getHitCount("city", "Haag"));     //D
+    }
 
   /*
     #A Create new document with "Haag" in city field
@@ -192,21 +192,21 @@ public class IndexingTest extends TestCase {
     #D Verify new document is indexed
   */
 
-  public void testMaxFieldLength() throws IOException {
+    public void testMaxFieldLength() throws IOException {
 
-    assertEquals(0, getHitCount("contents", "bridges"));  //1
+        assertEquals(0, getHitCount("contents", "bridges"));  //1
 
-    IndexWriter writer = new IndexWriter(directory, new WhitespaceAnalyzer(), //2
-                                         new IndexWriter.MaxFieldLength(1)); //2
-    Document doc = new Document();                        // 3
-    doc.add(new Field("contents",
-                      "these bridges can't be found",    // 3
-                      Field.Store.NO, Field.Index.ANALYZED));   // 3
-    writer.addDocument(doc);   // 3
-    writer.close();   // 3
+        IndexWriter writer = new IndexWriter(directory, new WhitespaceAnalyzer(), //2
+                new IndexWriter.MaxFieldLength(1)); //2
+        Document doc = new Document();                        // 3
+        doc.add(new Field("contents",
+                "these bridges can't be found",    // 3
+                Field.Store.NO, Field.Index.ANALYZED));   // 3
+        writer.addDocument(doc);   // 3
+        writer.close();   // 3
 
-    assertEquals(1, getHitCount("contents", "bridges"));   //4
-  }
+        assertEquals(1, getHitCount("contents", "bridges"));   //4
+    }
 
   /*
     #1 One initial document has bridges

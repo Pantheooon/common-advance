@@ -13,20 +13,20 @@ public class FizzBuzzGame {
 
     @Override
     public String toString() {
-        if (isRelatedTo(3) && isRelatedTo(5)){
+        if (isRelatedTo(3) && isRelatedTo(5)) {
             return "FizzBuzz";
         }
-        if (isRelatedTo(3)){
+        if (isRelatedTo(3)) {
             return "Fizz";
         }
-        if (isRelatedTo(5)){
+        if (isRelatedTo(5)) {
             return "Buzz";
         }
         return valueOf(raw);
     }
 
 
-    public boolean isRelatedTo(int num){
+    public boolean isRelatedTo(int num) {
         return raw % num == 0 || valueOf(raw).contains(valueOf(num));
     }
 }

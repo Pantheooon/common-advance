@@ -12,11 +12,11 @@ import java.io.IOException;
 
 public class WordCountApp {
     public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException {
-        System.setProperty("HADOOP_USER_NAME","root");
+        System.setProperty("HADOOP_USER_NAME", "root");
         Configuration configuration = new Configuration();
-        configuration.set("dfs.client.use.datanode.hostname","true");
-        configuration.set("fs.defaultFS","hdfs://pmj:8020");
-        configuration.set("mapreduce.jobtracker.staging.root.dir","d://tmp");
+        configuration.set("dfs.client.use.datanode.hostname", "true");
+        configuration.set("fs.defaultFS", "hdfs://pmj:8020");
+        configuration.set("mapreduce.jobtracker.staging.root.dir", "d://tmp");
         Job job = Job.getInstance(configuration);
         job.setJarByClass(WordCountApp.class);
         job.setMapperClass(WordCountMapper.class);

@@ -24,8 +24,8 @@ public class SchemaTest {
         String schemaStr = "l:bool,p:int,d:str";
         CommandLineSchema schema = new CommandLineSchema(schemaStr);
         SchemaSpc schemaSpc = schema.of("l");
-        assertEquals(schemaSpc,new SchemaSpc("l:bool"));
-        assertEquals(schema.of("p"),new SchemaSpc("p:int"));
+        assertEquals(schemaSpc, new SchemaSpc("l:bool"));
+        assertEquals(schema.of("p"), new SchemaSpc("p:int"));
     }
 
 

@@ -96,15 +96,16 @@ public class Total {
     }
 
 
-   static class MySource extends RichSourceFunction<Student> implements ParallelSourceFunction<Student> {
+    static class MySource extends RichSourceFunction<Student> implements ParallelSourceFunction<Student> {
 
 
-        private List<String> names = Arrays.asList("张三","李四","王五","赵六");
-        private List<String> subjects = Arrays.asList("英語","语文","数学","地理","化学","政治");
+        private List<String> names = Arrays.asList("张三", "李四", "王五", "赵六");
+        private List<String> subjects = Arrays.asList("英語", "语文", "数学", "地理", "化学", "政治");
 
         private ExecutorService executors;
 
         private volatile boolean flag = true;
+
         @Override
         public void open(Configuration parameters) throws Exception {
             super.open(parameters);
@@ -113,17 +114,17 @@ public class Total {
 
         @Override
         public void run(SourceContext<Student> ctx) throws Exception {
-            while (flag){
-                executors.execute(()->{
+            while (flag) {
+                executors.execute(() -> {
                     try {
                         TimeUnit.MICROSECONDS.sleep(100);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    int i = (int)(1+Math.random()*100);
+                    int i = (int) (1 + Math.random() * 100);
                     String name = this.names.get(i % 4);
                     String subject = this.subjects.get(i % 5);
-                    ctx.collect(new Student(name,subject,i,System.currentTimeMillis()));
+                    ctx.collect(new Student(name, subject, i, System.currentTimeMillis()));
 
                 });
             }
@@ -140,7 +141,7 @@ public class Total {
     @Data
     @AllArgsConstructor
     @ToString
-   static class Student{
+    static class Student {
         private String name;
         private String subject;
         private Integer score;

@@ -30,14 +30,14 @@ public class SortTest {
     }
 
     @Test
-    public void maopao(){
-        int[] num = new int[]{99,35,18,76,12};
-        for (int i=0;i<num.length;i++){
-            for (int j = 0;j<num.length-1;j++){
-                if (num[j]>num[j+1]){
+    public void maopao() {
+        int[] num = new int[]{99, 35, 18, 76, 12};
+        for (int i = 0; i < num.length; i++) {
+            for (int j = 0; j < num.length - 1; j++) {
+                if (num[j] > num[j + 1]) {
                     int swap = num[j];
-                    num[j] = num[j+1];
-                    num[j+1] =swap;
+                    num[j] = num[j + 1];
+                    num[j + 1] = swap;
                 }
             }
         }
@@ -48,39 +48,40 @@ public class SortTest {
 
 
     @Test
-    public void quickSort(){
-        a=new int[]{99,35,18,76,12};
-        quickSort(0,a.length-1);
+    public void quickSort() {
+        a = new int[]{99, 35, 18, 76, 12};
+        quickSort(0, a.length - 1);
         for (int i : a) {
             System.out.println(i);
         }
     }
+
     int[] a;
 
-    void quickSort(int left,int right){
-        int i,j,t,temp;
-        if (left>right){
+    void quickSort(int left, int right) {
+        int i, j, t, temp;
+        if (left > right) {
             return;
         }
         //temp为基准数据
-        temp=a[left];
-        i=left;
+        temp = a[left];
+        i = left;
         j = right;
-        while (i!=j){
-            while(a[j]>=temp&&i<j)
+        while (i != j) {
+            while (a[j] >= temp && i < j)
                 j--;
-            while (a[i]<=temp&&i<j)
+            while (a[i] <= temp && i < j)
                 i++;
-            if (i<j){
-                t=a[i];
-                a[i]=a[j];
-                a[j]=t;
+            if (i < j) {
+                t = a[i];
+                a[i] = a[j];
+                a[j] = t;
             }
         }
-        a[left]=a[i];
-        a[i]=temp;
-        quickSort(left,i-1);
-        quickSort(i+1,right);
+        a[left] = a[i];
+        a[i] = temp;
+        quickSort(left, i - 1);
+        quickSort(i + 1, right);
 
     }
 

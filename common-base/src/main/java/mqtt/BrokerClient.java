@@ -9,6 +9,8 @@ import java.util.Collection;
  */
 public interface BrokerClient<T> {
 
+
+
     /**
      * 订阅
      *

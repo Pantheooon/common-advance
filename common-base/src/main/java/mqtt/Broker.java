@@ -7,6 +7,8 @@ package mqtt;
  */
 public interface Broker<T> {
 
+
+
     /**
      * 接收发布
      */

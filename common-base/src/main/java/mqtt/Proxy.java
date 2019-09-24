@@ -18,6 +18,9 @@ public interface Proxy extends mqtt.Broker, BrokerClient {
      */
     Collection<Broker> getBrokers();
 
+
+
+
     /**
      * 连接
      *

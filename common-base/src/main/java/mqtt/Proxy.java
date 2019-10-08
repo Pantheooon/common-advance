@@ -51,4 +51,7 @@ public interface Proxy extends mqtt.Broker, BrokerClient {
      * @param client
      */
     void heartBeat(String client);
+
+    class Session {
+    }
 }

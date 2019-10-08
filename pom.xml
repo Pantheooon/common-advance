@@ -17,6 +17,7 @@
         <module>common-algorithm</module>
         <module>common-tdd</module>
         <module>common-base</module>
+        <module>common-interview</module>
     </modules>
     <dependencies>
         <dependency>
